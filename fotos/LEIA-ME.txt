@@ -1,0 +1,65 @@
+PASTA DE IMAGENS — Dr. Ricardo Ferro
+====================================
+
+Coloque os arquivos AQUI, com EXATAMENTE estes nomes. Assim que o arquivo
+existir, ele aparece sozinho no site (nao precisa mexer no codigo).
+Enquanto nao existir, o site mostra um marcador tracejado no lugar.
+
+
+ARQUIVOS ESPERADOS
+------------------
+
+1) hero.jpg  --- JA PRONTO ---
+   Onde: primeira dobra, ao lado do titulo.
+   1200 x 1500 (4:5). Gerada de "ER Myself 06.jpg", recortada 200px do
+   topo. Retrato fechado, maos sob o queixo.
+   Obs.: a parte de baixo recebe um degrade escuro com o nome sobreposto,
+   entao o rosto precisa ficar no terco superior do enquadramento.
+
+2) sobre.jpg  --- JA PRONTO ---
+   Onde: secao "Conheca o Especialista".
+   1200 x 1500 (4:5). Gerada de "ER Myself 01 (1).jpg", recortada 100px
+   do topo. Retrato sentado, tres quartos.
+
+3) cta.jpg  --- JA PRONTO ---
+   Onde: fundo do bloco escuro "Nao adie sua saude" (so no desktop, a
+   20% de opacidade, no lado direito).
+   1600 x 1000. Recorte horizontal do torso, da mesma "ER Myself 01".
+   Se preferir outra imagem aqui (centro cirurgico, equipamento robotico
+   ou equipe), e so substituir o arquivo mantendo o nome.
+
+   PARA TROCAR QUALQUER UMA: mantenha o nome do arquivo e a proporcao.
+   As de 4:5 precisam ser mesmo 4:5, senao a foto e cortada no centro
+   pelo object-fit: cover.
+
+4) logo.png  --- JA PRONTO ---
+   Versao ESCURA (nome em cinza + UROLOGIA em rosa).
+   Onde: header depois que voce rola (fundo branco) e menu aberto.
+   Gerada a partir de "horizontal 1.png", recortada para 1516x240.
+
+5) logo-branca.png  --- JA PRONTO ---
+   Versao BRANCA (nome em branco + UROLOGIA em rosa).
+   Onde: header no topo, primeira dobra e rodape (fundos escuros).
+   Gerada a partir de "horizontal 3.png", recortada para 1516x240.
+
+   Obs.: os PNGs originais tinham 4500x4500 com a arte ocupando menos
+   de 1% da tela -- se usados direto, a logo apareceria como um fiapo.
+   Por isso foram recortados. Se trocar por outra versao, recorte antes.
+
+6) favicon.png  --- PROVISORIO ---
+   Icone da aba do navegador, 512 x 512.
+   Monograma "RF" em branco sobre #4e4d53, gerado aqui porque a logo e
+   horizontal demais para caber num icone quadrado. Se a marca tiver um
+   simbolo proprio, substitua o arquivo.
+
+7) og-image.jpg  (opcional)
+   Imagem que aparece ao compartilhar o link no WhatsApp / redes.
+   Formato: 1200 x 630 px.
+
+
+DICAS
+-----
+- Pode usar .jpg, .png ou .webp, mas mantenha o nome do arquivo.
+  Se trocar a extensao (ex.: hero.webp), atualize o src no index.html.
+- Comprima as imagens antes de subir (squoosh.app ou tinypng.com).
+  Fotos acima de 400 KB deixam o site lento no celular.

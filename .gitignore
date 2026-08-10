@@ -1,0 +1,18 @@
+# Fotos originais da sessão de fotos (8-10 MB cada).
+# As versões tratadas e comprimidas estão em fotos/ e são essas que o site usa.
+ER Myself*.jpg
+horizontal *.png
+
+# Arquivos de logo em tamanho de impressão (4500x4500).
+# As versões recortadas para web estão em fotos/logo.png e fotos/logo-branca.png
+png (fundo transparente)/
+
+# Ferramentas locais
+.claude/
+node_modules/
+.vercel/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
