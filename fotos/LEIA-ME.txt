@@ -57,6 +57,35 @@ ARQUIVOS ESPERADOS
    Formato: 1200 x 630 px.
 
 
+SECOES NOVAS (video, tour e blog)
+---------------------------------
+
+VIDEOS -- nao dependem de imagem.
+   Abra o index.html, ache data-yt="" e cole o ID do video do YouTube
+   entre as aspas. Sao dois: um na secao "video" (apresentacao) e outro
+   na secao "tour". O ID e o trecho final da URL:
+      youtube.com/watch?v=ABC123xyz   ->   ABC123xyz
+      youtu.be/ABC123xyz              ->   ABC123xyz
+   Assim que o ID entra, o marcador tracejado some, o botao de play liga
+   e a capa e puxada do proprio YouTube. So depois do clique o video
+   carrega de verdade -- isso evita ~1 MB de scripts em cada visita.
+
+   Troque tambem o href do botao "Ver canal no YouTube" pelo endereco
+   do canal (hoje esta como "#").
+
+8) video-capa.jpg  (opcional, 16:9)
+9) tour-capa.jpg   (opcional, 16:9)
+   Capa propria para cada video. Se nao existir, usa a do YouTube.
+
+10) clinica-01.jpg / clinica-02.jpg / clinica-03.jpg  (16:9)
+   Tres fotos abaixo do video do tour. Sugestao: recepcao, consultorio
+   e sala de exames. Ex.: 1600 x 900 px.
+
+11) post-01.jpg / post-02.jpg / post-03.jpg  (16:9)
+   Capas dos artigos do blog. Ex.: 1200 x 675 px.
+   Os textos dos posts estao no index.html, entre colchetes.
+
+
 DICAS
 -----
 - Pode usar .jpg, .png ou .webp, mas mantenha o nome do arquivo.

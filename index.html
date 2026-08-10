@@ -45,12 +45,12 @@
 
     <nav class="nav-desktop" aria-label="Navegação principal">
       <a href="#sobre">Sobre</a>
+      <a href="#video">Vídeo</a>
       <a href="#problemas">Tratamentos</a>
-      <a href="#como-funciona">Como Funciona</a>
-      <a href="#diferenciais">Diferenciais</a>
       <a href="#depoimentos">Depoimentos</a>
-      <a href="#faq">FAQ</a>
+      <a href="#tour">Tour</a>
       <a href="#localizacao">Localização</a>
+      <a href="#blog">Blog</a>
     </nav>
 
     <a href="https://wa.me/556191332384" target="_blank" rel="noopener noreferrer" class="btn-nav">
@@ -67,13 +67,16 @@
   <div class="mobile-menu" id="mobile-menu">
     <nav>
       <a href="#sobre">Sobre</a>
+      <a href="#video">Vídeo</a>
       <a href="#problemas">Tratamentos</a>
       <a href="#servicos">Serviços</a>
       <a href="#como-funciona">Como Funciona</a>
       <a href="#diferenciais">Diferenciais</a>
       <a href="#depoimentos">Depoimentos</a>
-      <a href="#faq">FAQ</a>
+      <a href="#tour">Tour pela clínica</a>
       <a href="#localizacao">Localização</a>
+      <a href="#faq">FAQ</a>
+      <a href="#blog">Blog</a>
       <a href="https://wa.me/556191332384" target="_blank" rel="noopener noreferrer" class="btn-nav full">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
         Agendar consulta
@@ -223,6 +226,39 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ============================= VIDEO DE APRESENTACAO =====================
+     PARA ATIVAR: cole o ID do video do YouTube no data-yt do .video-embed.
+     O ID e o trecho depois de "v=" na URL. Ex.: youtu.be/dQw4w9WgXcQ -> dQw4w9WgXcQ
+     A capa e puxada automaticamente do YouTube; se quiser uma capa propria,
+     coloque fotos/video-capa.jpg.
+     Troque tambem o href do botao pelo endereco do canal.
+========================================================================= -->
+<section id="video" class="section bg-muted">
+  <div class="container">
+    <div class="head-center">
+      <span class="eyebrow" data-reveal>Apresentação</span>
+      <h2>Conheça o Dr. Ricardo em vídeo</h2>
+      <p class="lead" data-reveal>Em poucos minutos, o especialista explica sua abordagem, as técnicas que domina e o que esperar do atendimento.</p>
+    </div>
+
+    <div class="video-wrap" data-reveal="zoom">
+      <div class="video-embed" data-yt="" data-slot="Vídeo de apresentação — cole o ID do YouTube no atributo data-yt">
+        <img class="video-poster" src="fotos/video-capa.jpg" alt="" onerror="this.remove()">
+        <button class="video-play" type="button" disabled aria-label="Reproduzir vídeo de apresentação">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+
+      <div class="video-cta" data-reveal>
+        <a class="btn-youtube" href="#" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8M9.5 15.6V8.4l6.3 3.6z"/></svg>
+          Ver canal no YouTube
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -630,6 +666,43 @@
   </div>
 </section>
 
+<!-- ============================= TOUR PELA CLINICA =========================
+     Mesmo componente de video da secao de apresentacao: cole o ID do
+     YouTube no data-yt. Se o tour for em 360 (Google Street View ou
+     Matterport), troque o .video-embed inteiro pelo <iframe> deles.
+     As tres fotos abaixo sao opcionais: recepcao, consultorio, sala de exame.
+========================================================================= -->
+<section id="tour" class="section bg-card">
+  <div class="container">
+    <div class="head-center">
+      <span class="eyebrow" data-reveal>Estrutura</span>
+      <h2>Faça um tour pela clínica</h2>
+      <p class="lead" data-reveal>Um ambiente pensado para o seu conforto e privacidade, com equipamentos de última geração.</p>
+    </div>
+
+    <div class="video-wrap" data-reveal="zoom">
+      <div class="video-embed" data-yt="" data-slot="Vídeo do tour — cole o ID do YouTube no atributo data-yt">
+        <img class="video-poster" src="fotos/tour-capa.jpg" alt="" onerror="this.remove()">
+        <button class="video-play" type="button" disabled aria-label="Reproduzir tour pela clínica">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="tour-gallery">
+      <figure class="photo-frame ratio-16-9 r-lg" data-slot="Recepção — 16:9 — fotos/clinica-01.jpg" data-reveal style="--d:0ms">
+        <img src="fotos/clinica-01.jpg" alt="Recepção da clínica" onerror="this.remove()">
+      </figure>
+      <figure class="photo-frame ratio-16-9 r-lg" data-slot="Consultório — 16:9 — fotos/clinica-02.jpg" data-reveal style="--d:110ms">
+        <img src="fotos/clinica-02.jpg" alt="Consultório" onerror="this.remove()">
+      </figure>
+      <figure class="photo-frame ratio-16-9 r-lg" data-slot="Sala de exames — 16:9 — fotos/clinica-03.jpg" data-reveal style="--d:220ms">
+        <img src="fotos/clinica-03.jpg" alt="Sala de exames" onerror="this.remove()">
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- ============================= LOCALIZAÇÃO ============================= -->
 <section id="localizacao" class="section bg-card">
   <div class="container">
@@ -705,6 +778,70 @@
           <div class="acc-panel"><div class="acc-body"><p>É muito simples! Basta clicar no botão de WhatsApp nesta página ou ligar para o número indicado. Nossa equipe estará pronta para atendê-lo e encontrar o melhor horário para sua consulta.</p></div></div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= BLOG ======================================
+     ESTRUTURA MODELO. Os textos entre colchetes sao espacos reservados.
+     Para cada artigo: troque a capa (fotos/post-01.jpg, 16:9), a categoria,
+     o titulo, o resumo, a data e o href do link.
+     Para adicionar outro, copie um bloco <article class="post">.
+     Enquanto nao houver uma pagina /blog, o botao do final aponta para "#".
+========================================================================= -->
+<section id="blog" class="section bg-muted">
+  <div class="container">
+    <div class="head-center">
+      <span class="eyebrow" data-reveal>Blog</span>
+      <h2>Conteúdo sobre saúde urológica</h2>
+      <p class="lead" data-reveal>Informação de quem opera todos os dias, em linguagem que você entende.</p>
+    </div>
+
+    <div class="posts">
+
+      <article class="post" data-reveal style="--d:0ms">
+        <a class="post-cover photo-frame ratio-16-9" href="#" data-slot="Capa do artigo — 16:9 — fotos/post-01.jpg">
+          <img src="fotos/post-01.jpg" alt="" onerror="this.remove()">
+        </a>
+        <div class="post-body">
+          <span class="post-tag ph">[Categoria]</span>
+          <h3><a href="#" class="ph">[Título do artigo — uma dúvida real que o paciente digita no Google]</a></h3>
+          <p class="ph">[Resumo de duas ou três linhas. O card se ajusta ao tamanho do texto.]</p>
+          <p class="post-meta ph">[data] • [tempo de leitura]</p>
+        </div>
+      </article>
+
+      <article class="post" data-reveal style="--d:110ms">
+        <a class="post-cover photo-frame ratio-16-9" href="#" data-slot="Capa do artigo — 16:9 — fotos/post-02.jpg">
+          <img src="fotos/post-02.jpg" alt="" onerror="this.remove()">
+        </a>
+        <div class="post-body">
+          <span class="post-tag ph">[Categoria]</span>
+          <h3><a href="#" class="ph">[Título do artigo]</a></h3>
+          <p class="ph">[Resumo de duas ou três linhas.]</p>
+          <p class="post-meta ph">[data] • [tempo de leitura]</p>
+        </div>
+      </article>
+
+      <article class="post" data-reveal style="--d:220ms">
+        <a class="post-cover photo-frame ratio-16-9" href="#" data-slot="Capa do artigo — 16:9 — fotos/post-03.jpg">
+          <img src="fotos/post-03.jpg" alt="" onerror="this.remove()">
+        </a>
+        <div class="post-body">
+          <span class="post-tag ph">[Categoria]</span>
+          <h3><a href="#" class="ph">[Título do artigo]</a></h3>
+          <p class="ph">[Resumo de duas ou três linhas.]</p>
+          <p class="post-meta ph">[data] • [tempo de leitura]</p>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="blog-cta" data-reveal>
+      <a href="#" class="btn-outline">
+        Ver todos os artigos
+        <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
 </section>

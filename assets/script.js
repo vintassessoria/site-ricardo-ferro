@@ -260,6 +260,47 @@
   }
 
   /* ======================================================================
+     5c. VÍDEOS DO YOUTUBE
+     O iframe do YouTube pesa ~1 MB e roda scripts de rastreamento. Aqui
+     ele só entra depois do clique: antes disso a área mostra a capa e um
+     botão. Basta preencher data-yt com o ID do vídeo — a capa é puxada
+     automaticamente, a menos que exista uma imagem local.
+     ====================================================================== */
+  document.querySelectorAll('.video-embed').forEach(function (box) {
+    var id  = (box.getAttribute('data-yt') || '').trim();
+    var btn = box.querySelector('.video-play');
+
+    /* sem ID configurado: mantém o marcador e o botão desativado */
+    if (!id) return;
+
+    box.classList.add('pronto');
+    btn.disabled = false;
+
+    /* capa: usa a imagem local se ela existir, senão a miniatura do YouTube */
+    var poster = box.querySelector('.video-poster');
+    if (!poster || !poster.naturalWidth) {
+      var img = document.createElement('img');
+      img.className = 'video-poster';
+      img.alt = '';
+      img.loading = 'lazy';
+      img.src = 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
+      /* nem todo vídeo tem maxres: cai para a resolução garantida */
+      img.onerror = function () { this.onerror = null; this.src = 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'; };
+      box.insertBefore(img, box.firstChild);
+    }
+
+    btn.addEventListener('click', function () {
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+      frame.title = btn.getAttribute('aria-label') || 'Vídeo';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      frame.allowFullscreen = true;
+      box.appendChild(frame);
+      btn.remove();
+    });
+  });
+
+  /* ======================================================================
      6. MENU MOBILE
      ====================================================================== */
   burger.addEventListener('click', function () {
