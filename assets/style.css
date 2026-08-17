@@ -861,7 +861,8 @@ main > section:not(.hero){
 }
 
 .marquee-track{
-  display:flex; align-items:flex-start;
+  /* stretch: todos os cards ficam com a altura do mais alto */
+  display:flex; align-items:stretch;
   gap:var(--gap); width:max-content;
   padding-inline:calc(var(--gap) / 2);
   animation:marquee var(--dur, 60s) linear infinite;
@@ -878,6 +879,9 @@ main > section:not(.hero){
 
 .review{
   flex:0 0 21rem; width:21rem;
+  /* coluna: deixa a data e a resposta ancoradas na base do card,
+     para o espaço sobrando parecer intencional e não sobra de layout */
+  display:flex; flex-direction:column;
   background:var(--card); color:var(--foreground);
   border-radius:1rem; padding:1.25rem;
   box-shadow:0 18px 40px -18px hsl(0 0% 0% / .45);
@@ -906,9 +910,10 @@ main > section:not(.hero){
 
 .review-top .stars{ margin-left:auto; }
 
-.review-text{ font-size:.9375rem; line-height:1.65; color:var(--foreground); }
+.review-text{ font-size:.9375rem; line-height:1.65; color:var(--foreground); margin-bottom:.875rem; }
 .review-meta{
-  margin-top:.875rem; padding-top:.75rem;
+  margin-top:auto;          /* empurra para a base do card */
+  padding-top:.75rem;
   border-top:1px solid var(--border);
   font-size:.6875rem; color:var(--muted-fg);
 }
@@ -1204,6 +1209,43 @@ main > section:not(.hero){
 .post-meta{ margin-top:auto; padding-top:.5rem; font-size:.6875rem; color:var(--muted-fg); }
 
 .blog-cta{ text-align:center; margin-top:3rem; }
+
+/* --- estado "em breve" ---------------------------------------------------
+   Enquanto não há artigos. Quando houver, troque o bloco no HTML pela
+   grade .posts — o CSS dela continua acima, pronto.                     */
+.blog-breve{
+  max-width:38rem; margin-inline:auto;
+  padding:2.5rem 1.5rem; border-radius:1.25rem;
+  background:var(--card);
+  border:1px dashed var(--border);
+  box-shadow:var(--shadow-soft);
+  text-align:center;
+}
+@media (min-width:768px){ .blog-breve{ padding:3.5rem 3rem; } }
+
+.blog-breve-ico{
+  width:3.5rem; height:3.5rem; margin:0 auto 1.25rem;
+  border-radius:1rem;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--gradient-primary); color:#fff;
+}
+.blog-breve-ico svg{ width:1.75rem; height:1.75rem; }
+
+.blog-breve-tag{
+  display:inline-block; margin-bottom:.875rem;
+  padding:.3125rem .75rem; border-radius:9999px;
+  background:hsl(145 63% 42% / .12); color:hsl(145 63% 30%);
+  font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+}
+.blog-breve h3{
+  font-size:1.375rem; color:var(--foreground); margin-bottom:.75rem;
+}
+@media (min-width:768px){ .blog-breve h3{ font-size:1.625rem; } }
+.blog-breve > p{
+  max-width:30rem; margin-inline:auto;
+  color:var(--muted-fg); line-height:1.7;
+}
+.blog-breve-cta{ margin-top:2rem; }
 
 /* ==========================================================================
    FOOTER

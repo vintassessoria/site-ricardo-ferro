@@ -247,7 +247,7 @@
     </div>
 
     <div class="video-wrap" data-reveal="zoom">
-      <div class="video-embed" data-yt="" data-slot="Vídeo de apresentação — cole o ID do YouTube no atributo data-yt">
+      <div class="video-embed" data-yt="pU1KcRvhEDQ" data-slot="Vídeo de apresentação — cole o ID do YouTube no atributo data-yt">
         <img class="video-poster" src="fotos/video-capa.jpg" alt="" onerror="this.remove()">
         <button class="video-play" type="button" disabled aria-label="Reproduzir vídeo de apresentação">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
@@ -255,7 +255,7 @@
       </div>
 
       <div class="video-cta" data-reveal>
-        <a class="btn-youtube" href="#" target="_blank" rel="noopener noreferrer">
+        <a class="btn-youtube" href="https://www.youtube.com/@ricardoferrouro" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8M9.5 15.6V8.4l6.3 3.6z"/></svg>
           Ver canal no YouTube
         </a>
@@ -869,65 +869,35 @@
 </section>
 
 <!-- ============================= BLOG ======================================
-     ESTRUTURA MODELO. Os textos entre colchetes sao espacos reservados.
-     Para cada artigo: troque a capa (fotos/post-01.jpg, 16:9), a categoria,
-     o titulo, o resumo, a data e o href do link.
-     Para adicionar outro, copie um bloco <article class="post">.
-     Enquanto nao houver uma pagina /blog, o botao do final aponta para "#".
+     Estado "em breve". Quando os artigos existirem, troque o bloco
+     .blog-breve por uma grade de cards. O CSS da grade (.posts / .post)
+     continua no style.css, pronto para uso.
 ========================================================================= -->
 <section id="blog" class="section bg-muted">
   <div class="container">
     <div class="head-center">
       <span class="eyebrow" data-reveal>Blog</span>
       <h2>Conteúdo sobre saúde urológica</h2>
-      <p class="lead" data-reveal>Informação de quem opera todos os dias, em linguagem que você entende.</p>
     </div>
 
-    <div class="posts">
+    <div class="blog-breve" data-reveal="zoom">
+      <div class="blog-breve-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0V7a1 1 0 0 1 1-1h1"/>
+          <path d="M16 8h-6"/><path d="M16 12h-6"/><path d="M12 16h-2"/>
+        </svg>
+      </div>
 
-      <article class="post" data-reveal style="--d:0ms">
-        <a class="post-cover photo-frame ratio-16-9" href="#" data-slot="Capa do artigo — 16:9 — fotos/post-01.jpg">
-          <img src="fotos/post-01.jpg" alt="" onerror="this.remove()">
+      <span class="blog-breve-tag">Em breve</span>
+      <h3>Estamos preparando esta área</h3>
+      <p>Artigos sobre próstata, cirurgia robótica, Laser HoLEP e saúde do homem — escritos pelo próprio Dr. Ricardo Ferro, em linguagem que você entende.</p>
+
+      <div class="blog-breve-cta">
+        <a class="btn-youtube" href="https://www.youtube.com/@ricardoferrouro" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8M9.5 15.6V8.4l6.3 3.6z"/></svg>
+          Enquanto isso, acompanhe no YouTube
         </a>
-        <div class="post-body">
-          <span class="post-tag ph">[Categoria]</span>
-          <h3><a href="#" class="ph">[Título do artigo — uma dúvida real que o paciente digita no Google]</a></h3>
-          <p class="ph">[Resumo de duas ou três linhas. O card se ajusta ao tamanho do texto.]</p>
-          <p class="post-meta ph">[data] • [tempo de leitura]</p>
-        </div>
-      </article>
-
-      <article class="post" data-reveal style="--d:110ms">
-        <a class="post-cover photo-frame ratio-16-9" href="#" data-slot="Capa do artigo — 16:9 — fotos/post-02.jpg">
-          <img src="fotos/post-02.jpg" alt="" onerror="this.remove()">
-        </a>
-        <div class="post-body">
-          <span class="post-tag ph">[Categoria]</span>
-          <h3><a href="#" class="ph">[Título do artigo]</a></h3>
-          <p class="ph">[Resumo de duas ou três linhas.]</p>
-          <p class="post-meta ph">[data] • [tempo de leitura]</p>
-        </div>
-      </article>
-
-      <article class="post" data-reveal style="--d:220ms">
-        <a class="post-cover photo-frame ratio-16-9" href="#" data-slot="Capa do artigo — 16:9 — fotos/post-03.jpg">
-          <img src="fotos/post-03.jpg" alt="" onerror="this.remove()">
-        </a>
-        <div class="post-body">
-          <span class="post-tag ph">[Categoria]</span>
-          <h3><a href="#" class="ph">[Título do artigo]</a></h3>
-          <p class="ph">[Resumo de duas ou três linhas.]</p>
-          <p class="post-meta ph">[data] • [tempo de leitura]</p>
-        </div>
-      </article>
-
-    </div>
-
-    <div class="blog-cta" data-reveal>
-      <a href="#" class="btn-outline">
-        Ver todos os artigos
-        <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
+      </div>
     </div>
   </div>
 </section>

@@ -276,17 +276,25 @@
     box.classList.add('pronto');
     btn.disabled = false;
 
-    /* capa: usa a imagem local se ela existir, senão a miniatura do YouTube */
+    /* capa: usa a imagem local se ela existir, senão a miniatura do YouTube.
+       Nem todo vídeo tem maxresdefault — quando não tem, o YouTube às vezes
+       devolve 404 e às vezes um cinza de 120x90. Por isso a imagem é testada
+       fora da tela antes de entrar, em vez de exibir e corrigir depois. */
     var poster = box.querySelector('.video-poster');
     if (!poster || !poster.naturalWidth) {
-      var img = document.createElement('img');
-      img.className = 'video-poster';
-      img.alt = '';
-      img.loading = 'lazy';
-      img.src = 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
-      /* nem todo vídeo tem maxres: cai para a resolução garantida */
-      img.onerror = function () { this.onerror = null; this.src = 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'; };
-      box.insertBefore(img, box.firstChild);
+      var usar = function (url) {
+        var img = document.createElement('img');
+        img.className = 'video-poster';
+        img.alt = '';
+        img.src = url;
+        box.insertBefore(img, box.firstChild);
+      };
+      var maxres = 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
+      var hq     = 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg';
+      var teste  = new Image();
+      teste.onload  = function () { usar(teste.naturalWidth > 200 ? maxres : hq); };
+      teste.onerror = function () { usar(hq); };
+      teste.src = maxres;
     }
 
     btn.addEventListener('click', function () {
