@@ -309,6 +309,32 @@
   });
 
   /* ======================================================================
+     5d. TAKES DA CLÍNICA
+     Seis vídeos em loop pesam se todos carregarem de uma vez. Eles ficam
+     com preload="none" e só baixam e tocam quando entram na tela; ao sair,
+     pausam. Fora da tela, o visitante vê apenas o pôster.
+     ====================================================================== */
+  var clipes = document.querySelectorAll('.tour-clip video');
+  if (clipes.length && 'IntersectionObserver' in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) {
+          if (v.preload === 'none') v.preload = 'auto';
+          /* play() devolve promise: navegador pode recusar, e tudo bem */
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        } else if (!v.paused) {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    [].forEach.call(clipes, function (v) { vio.observe(v); });
+  } else {
+    [].forEach.call(clipes, function (v) { v.setAttribute('controls', ''); });
+  }
+
+  /* ======================================================================
      6. MENU MOBILE
      ====================================================================== */
   burger.addEventListener('click', function () {

@@ -77,9 +77,26 @@ VIDEOS -- nao dependem de imagem.
 9) tour-capa.jpg   (opcional, 16:9)
    Capa propria para cada video. Se nao existir, usa a do YouTube.
 
-10) clinica-01.jpg / clinica-02.jpg / clinica-03.jpg  (16:9)
-   Tres fotos abaixo do video do tour. Sugestao: recepcao, consultorio
-   e sala de exames. Ex.: 1600 x 900 px.
+10) clinica-01 ate clinica-06  --- JA PRONTOS ---
+   Seis takes verticais da clinica, cada um com .mp4 + .jpg de mesmo
+   nome. O .mp4 e o video em loop; o .jpg e o poster que aparece antes
+   dele carregar.
+
+   Convertidos dos .MOV originais do celular: 540x960, H.264, sem faixa
+   de audio. Os 6 originais somavam 35,5 MB; convertidos, 2 MB.
+
+   Tocam mudos, em loop, e so comecam a baixar quando entram na tela.
+
+   Ordem em que aparecem no site (o numero do arquivo nao segue a ordem
+   da tela, e sim a ordem de conversao):
+      clinica-01  Entrada             clinica-04  Ambiente de espera
+      clinica-05  Recepcao            clinica-02  Corredor
+      clinica-03  Sala de espera      clinica-06  Consultorios
+
+   PARA TROCAR UM TAKE: substitua o par .mp4 + .jpg mantendo o nome.
+   Se for a partir de um .MOV novo, o comando usado foi:
+      ffmpeg -i ENTRADA.MOV -an -vf "scale=540:960:force_original_aspect_ratio=increase,crop=540:960" -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p -movflags +faststart SAIDA.mp4
+      ffmpeg -i SAIDA.mp4 -frames:v 1 -q:v 6 SAIDA.jpg
 
 11) post-01.jpg / post-02.jpg / post-03.jpg  (16:9)
    Capas dos artigos do blog. Ex.: 1200 x 675 px.

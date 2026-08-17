@@ -3,6 +3,11 @@
 ER Myself*.jpg
 horizontal *.png
 
+# Takes brutos da clínica direto do celular (HEVC, ~40 MB no total).
+# As versões convertidas para web estão em fotos/clinica-*.mp4
+*.MOV
+*.mov
+
 # Arquivos de logo em tamanho de impressão (4500x4500).
 # As versões recortadas para web estão em fotos/logo.png e fotos/logo-branca.png
 png (fundo transparente)/

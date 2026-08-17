@@ -1120,9 +1120,39 @@ main > section:not(.hero){
 /* ==========================================================================
    TOUR — galeria da clínica
    ========================================================================== */
-.tour-gallery{ display:grid; gap:1rem; margin-top:2.5rem; }
+.tour-gallery{
+  display:grid; gap:.875rem;
+  grid-template-columns:repeat(2,1fr);
+}
 @media (min-width:768px){ .tour-gallery{ grid-template-columns:repeat(3,1fr); gap:1.25rem; } }
-.tour-gallery .photo-frame{ margin:0; box-shadow:var(--shadow-soft); }
+
+/* cada take e um retangulo 9:16, como foi filmado no celular */
+.tour-clip{
+  position:relative; margin:0;
+  aspect-ratio:9/16;
+  border-radius:1rem; overflow:hidden;
+  background:hsl(250 8% 12%);
+  box-shadow:var(--shadow-soft);
+  transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s ease;
+}
+.tour-clip:hover{ transform:translateY(-5px); box-shadow:var(--shadow-strong); }
+.tour-clip video{
+  display:block; width:100%; height:100%; object-fit:cover;
+}
+/* veu para a legenda ficar legivel sobre qualquer cena */
+.tour-clip::after{
+  content:''; position:absolute; inset:auto 0 0 0; height:45%;
+  background:linear-gradient(to top, hsl(250 10% 8% / .8) 0%, transparent 100%);
+  pointer-events:none;
+}
+.tour-clip figcaption{
+  position:absolute; z-index:2; left:.875rem; right:.875rem; bottom:.75rem;
+  color:#fff; font-size:.75rem; font-weight:600; letter-spacing:.04em;
+  text-shadow:0 1px 3px hsl(250 10% 8% / .6);
+}
+@media (min-width:768px){
+  .tour-clip figcaption{ left:1.125rem; right:1.125rem; bottom:1rem; font-size:.875rem; }
+}
 
 /* ==========================================================================
    PRODUÇÃO CIENTÍFICA
