@@ -21,3 +21,7 @@ node_modules/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Fotos originais recebidas por WhatsApp. As versoes usadas no site
+# estao renomeadas em fotos/clinica-01..06.jpg
+WhatsApp Image*.jpeg
