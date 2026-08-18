@@ -763,10 +763,9 @@
 </section>
 
 <!-- ============================= TOUR PELA CLINICA =========================
-     Takes verticais da clinica, em loop mudo. Os arquivos vieram dos
-     .MOV originais convertidos para MP4 (540x960, sem audio).
-     Os videos so tocam quando entram na tela -- ver script.js.
-     Para trocar um take: substitua o par .mp4 + .jpg mantendo o nome.
+     Fotos da clinica. A galeria e em colunas (masonry): cada foto mantem
+     a propria proporcao, entao verticais e horizontais convivem sem corte.
+     Para trocar: substitua o arquivo em fotos/ mantendo o nome.
 ========================================================================= -->
 <section id="tour" class="section bg-card">
   <div class="container">
@@ -777,34 +776,34 @@
     </div>
 
     <div class="tour-gallery">
-      <figure class="tour-clip" data-reveal style="--d:0ms">
-        <video src="fotos/clinica-01.mp4" poster="fotos/clinica-01.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+      <figure class="tour-shot" data-reveal style="--d:0ms">
+        <img src="fotos/clinica-01.jpg" alt="Entrada da clínica Dr. Ricardo Ferro" loading="lazy" width="720" height="1280">
         <figcaption>Entrada</figcaption>
       </figure>
 
-      <figure class="tour-clip" data-reveal style="--d:90ms">
-        <video src="fotos/clinica-05.mp4" poster="fotos/clinica-05.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
-        <figcaption>Recepção</figcaption>
-      </figure>
-
-      <figure class="tour-clip" data-reveal style="--d:180ms">
-        <video src="fotos/clinica-03.mp4" poster="fotos/clinica-03.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
-        <figcaption>Sala de espera</figcaption>
-      </figure>
-
-      <figure class="tour-clip" data-reveal style="--d:0ms">
-        <video src="fotos/clinica-04.mp4" poster="fotos/clinica-04.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
-        <figcaption>Ambiente de espera</figcaption>
-      </figure>
-
-      <figure class="tour-clip" data-reveal style="--d:90ms">
-        <video src="fotos/clinica-02.mp4" poster="fotos/clinica-02.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+      <figure class="tour-shot" data-reveal style="--d:90ms">
+        <img src="fotos/clinica-02.jpg" alt="Corredor com a identidade da clínica" loading="lazy" width="720" height="1280">
         <figcaption>Corredor</figcaption>
       </figure>
 
-      <figure class="tour-clip" data-reveal style="--d:180ms">
-        <video src="fotos/clinica-06.mp4" poster="fotos/clinica-06.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
-        <figcaption>Consultórios</figcaption>
+      <figure class="tour-shot" data-reveal style="--d:180ms">
+        <img src="fotos/clinica-03.jpg" alt="Sala de espera da clínica" loading="lazy" width="1280" height="720">
+        <figcaption>Sala de espera</figcaption>
+      </figure>
+
+      <figure class="tour-shot" data-reveal style="--d:0ms">
+        <img src="fotos/clinica-04.jpg" alt="Consultório de atendimento" loading="lazy" width="1280" height="720">
+        <figcaption>Consultório</figcaption>
+      </figure>
+
+      <figure class="tour-shot" data-reveal style="--d:90ms">
+        <img src="fotos/clinica-05.jpg" alt="Circulação interna da clínica" loading="lazy" width="720" height="1280">
+        <figcaption>Circulação</figcaption>
+      </figure>
+
+      <figure class="tour-shot" data-reveal style="--d:180ms">
+        <img src="fotos/clinica-06.jpg" alt="Lavabo da clínica" loading="lazy" width="720" height="1280">
+        <figcaption>Lavabo</figcaption>
       </figure>
     </div>
   </div>

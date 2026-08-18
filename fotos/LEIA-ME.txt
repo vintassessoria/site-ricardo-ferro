@@ -52,53 +52,57 @@ ARQUIVOS ESPERADOS
    horizontal demais para caber num icone quadrado. Se a marca tiver um
    simbolo proprio, substitua o arquivo.
 
-7) og-image.jpg  (opcional)
-   Imagem que aparece ao compartilhar o link no WhatsApp / redes.
-   Formato: 1200 x 630 px.
+7) og-image.jpg  --- JA PRONTO ---
+   Imagem que aparece ao compartilhar o link no WhatsApp e nas redes.
+   1200 x 630. Retrato + nome + especialidades sobre o cinza da marca.
+   Se trocar, as meta tags no topo do index.html usam URL ABSOLUTA --
+   caminho relativo e ignorado pelos robos do WhatsApp e do Facebook.
 
 
-SECOES NOVAS (video, tour e blog)
----------------------------------
+SECAO DE VIDEO
+--------------
 
-VIDEOS -- nao dependem de imagem.
-   Abra o index.html, ache data-yt="" e cole o ID do video do YouTube
-   entre as aspas. Sao dois: um na secao "video" (apresentacao) e outro
-   na secao "tour". O ID e o trecho final da URL:
+VIDEO DE APRESENTACAO -- ja ativo.
+   Aponta para o video "Cirurgia Robotica - Ricardo Ferro" e o botao
+   leva ao canal @ricardoferrouro.
+
+   Para trocar por outro video: no index.html, ache data-yt="pU1KcRvhEDQ"
+   e troque pelo ID do novo. O ID e o trecho final da URL:
       youtube.com/watch?v=ABC123xyz   ->   ABC123xyz
       youtu.be/ABC123xyz              ->   ABC123xyz
-   Assim que o ID entra, o marcador tracejado some, o botao de play liga
-   e a capa e puxada do proprio YouTube. So depois do clique o video
+   A capa e puxada do proprio YouTube. So depois do clique o video
    carrega de verdade -- isso evita ~1 MB de scripts em cada visita.
 
-   Troque tambem o href do botao "Ver canal no YouTube" pelo endereco
-   do canal (hoje esta como "#").
-
 8) video-capa.jpg  (opcional, 16:9)
-9) tour-capa.jpg   (opcional, 16:9)
-   Capa propria para cada video. Se nao existir, usa a do YouTube.
+   Capa propria para o video. Se nao existir, usa a do YouTube.
 
-10) clinica-01 ate clinica-06  --- JA PRONTOS ---
-   Seis takes verticais da clinica, cada um com .mp4 + .jpg de mesmo
-   nome. O .mp4 e o video em loop; o .jpg e o poster que aparece antes
-   dele carregar.
+9) clinica-01 ate clinica-06  --- JA PRONTOS ---
+   Seis fotos da clinica, na secao "Faca um tour pela clinica".
+   Sao as fotos enviadas pelo WhatsApp, apenas renomeadas: nao foram
+   recortadas nem recomprimidas, para nao perder qualidade.
 
-   Convertidos dos .MOV originais do celular: 540x960, H.264, sem faixa
-   de audio. Os 6 originais somavam 35,5 MB; convertidos, 2 MB.
+   Ordem e conteudo:
+      clinica-01  Entrada        (vertical   720x1280)
+      clinica-02  Corredor       (vertical   720x1280)
+      clinica-03  Sala de espera (horizontal 1280x720)
+      clinica-04  Consultorio    (horizontal 1280x720)
+      clinica-05  Circulacao     (vertical   720x1280)
+      clinica-06  Lavabo         (vertical   720x1280)
 
-   Tocam mudos, em loop, e so comecam a baixar quando entram na tela.
+   A galeria e em COLUNAS, nao em grade: cada foto mantem a propria
+   proporcao, entao vertical e horizontal convivem sem corte. Sao duas
+   colunas, o que com 4 verticais e 2 horizontais fecha as alturas
+   iguais nos dois lados.
 
-   Ordem em que aparecem no site (o numero do arquivo nao segue a ordem
-   da tela, e sim a ordem de conversao):
-      clinica-01  Entrada             clinica-04  Ambiente de espera
-      clinica-05  Recepcao            clinica-02  Corredor
-      clinica-03  Sala de espera      clinica-06  Consultorios
+   SE FOR TROCAR ALGUMA: mantenha o nome do arquivo. A proporcao pode
+   ser qualquer uma, a galeria se adapta. Mas mudar a proporcao entre
+   quantas sao verticais e quantas sao horizontais pode desbalancear
+   as colunas.
 
-   PARA TROCAR UM TAKE: substitua o par .mp4 + .jpg mantendo o nome.
-   Se for a partir de um .MOV novo, o comando usado foi:
-      ffmpeg -i ENTRADA.MOV -an -vf "scale=540:960:force_original_aspect_ratio=increase,crop=540:960" -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p -movflags +faststart SAIDA.mp4
-      ffmpeg -i SAIDA.mp4 -frames:v 1 -q:v 6 SAIDA.jpg
+   Os videos .mp4 que ocupavam esta secao antes foram removidos. Os
+   .MOV originais continuam na pasta do site, fora do repositorio.
 
-11) post-01.jpg / post-02.jpg / post-03.jpg  (16:9)
+10) post-01.jpg / post-02.jpg / post-03.jpg  (16:9)
    Capas dos artigos do blog. Ex.: 1200 x 675 px.
    Os textos dos posts estao no index.html, entre colchetes.
 
