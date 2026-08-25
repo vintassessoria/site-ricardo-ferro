@@ -11,7 +11,9 @@
   var toTop       = document.getElementById('toTop');
   var ringFill    = document.getElementById('ringFill');
   var hero        = document.querySelector('.hero');
-  var heroInner   = document.querySelector('.hero-inner');
+  var heroInner   = document.querySelector(".hero-inner");
+  var palcoTour    = document.querySelector(".tour-stage");
+  var videoTourBox = document.querySelector(".tour-video");
 
   var RING = 2 * Math.PI * 20;   // circunferência do anel (r=20)
 
@@ -156,6 +158,20 @@
       var speed    = parseFloat(el.getAttribute('data-parallax')) || 0;
       var progress = (r.top + r.height / 2 - vh / 2) / vh;    // -1 .. 1
       el.style.setProperty('--py', (-progress * speed).toFixed(1) + 'px');
+    }
+
+    /* --- palco do video do tour ---------------------------------------
+       Enquanto a pista de rolagem passa, --tp vai de 0 a 1 e o CSS
+       abre a largura do video. Chega ao maximo na metade da pista e
+       fica assim ate o fim, para nao encolher com o video rodando. */
+    if (palcoTour) {
+      var rp    = palcoTour.getBoundingClientRect();
+      var pista = palcoTour.offsetHeight - vh;
+      if (rp.bottom > 0 && rp.top < vh && pista > 0) {
+        var andado = Math.min(Math.max(-rp.top, 0), pista);
+        var tp     = Math.min(andado / (pista * 0.5), 1);
+        videoTourBox.style.setProperty('--tp', tp.toFixed(3));
+      }
     }
 
     /* --- scrollspy ----------------------------------------------------- */

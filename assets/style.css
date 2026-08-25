@@ -1043,17 +1043,41 @@ main > section:not(.hero){
    VÍDEO (apresentação e tour)
    ========================================================================== */
 .ratio-16-9{ aspect-ratio:16/9; }
-
 .video-wrap{ max-width:56rem; margin-inline:auto; }
-/* o tour foi entregue em 640x360; limitar a largura evita esticar
-   demais a imagem e deixa-la mole */
-.video-wrap--sm{ max-width:48rem; margin-bottom:2.5rem; }
+
+/* --- palco do video do tour ----------------------------------------------
+   O palco e mais alto que a tela: essa sobra e a pista de rolagem. O
+   bloco de dentro fica grudado no topo enquanto ela passa, e o JS
+   escreve --tp (0 a 1) conforme se desce. A largura, o arredondamento
+   e a sombra interpolam a partir dessa unica variavel.               */
+.tour-stage{
+  position:relative;
+  height:170vh;              /* 100vh grudado + 70vh de pista */
+  margin-bottom:3rem;
+}
+/* no celular o video ja nasce quase na largura da tela: a pista longa
+   so gastaria rolagem sem efeito visivel */
+@media (max-width:767px){ .tour-stage{ height:120vh; margin-bottom:2rem; } }
+
+.tour-sticky{
+  position:sticky; top:0;
+  height:100vh;
+  display:flex; align-items:center; justify-content:center;
+}
 
 .tour-video{
+  /* 640x360 na origem: no maximo a tela cheia, e nunca tao alto que
+     precise cortar em cima e embaixo */
+  --tour-base:min(48rem, calc(100% - 2rem));
+  --tour-full:min(100%, calc((100vh - 3rem) * 16 / 9));
+
   position:relative; aspect-ratio:16/9;
-  border-radius:1rem; overflow:hidden;
+  width:calc(var(--tour-base) + (var(--tour-full) - var(--tour-base)) * var(--tp, 0));
+  border-radius:calc(1rem * (1 - var(--tp, 0)));
+  overflow:hidden;
   background:hsl(250 8% 12%);
-  box-shadow:var(--shadow-strong);
+  box-shadow:0 20px 50px -12px hsl(var(--ink) / calc(.3 * (1 - var(--tp, 0))));
+  will-change:width;
 }
 .tour-video video{ display:block; width:100%; height:100%; object-fit:cover; }
 /* etiqueta some assim que o video comeca */

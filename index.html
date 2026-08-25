@@ -774,10 +774,15 @@
       <h2>Faça um tour pela clínica</h2>
       <p class="lead" data-reveal>Um ambiente pensado para o seu conforto e privacidade, com equipamentos de última geração.</p>
     </div>
+  </div>
 
-    <!-- Video do tour. preload="none": os 5 MB so baixam se alguem
-         apertar o play. Tem narracao, entao NAO toca sozinho nem mudo. -->
-    <div class="video-wrap video-wrap--sm" data-reveal="zoom">
+  <!-- Palco do video. A altura extra serve de pista de rolagem: o bloco
+       de dentro fica grudado (sticky) e o JS interpola a largura de
+       48rem ate a tela inteira conforme se desce. -->
+  <div class="tour-stage">
+    <div class="tour-sticky">
+      <!-- preload="none": os 5 MB so baixam se alguem apertar o play.
+           Tem narracao, entao NAO toca sozinho nem mudo. -->
       <div class="tour-video">
         <video src="fotos/tour-clinica.mp4" poster="fotos/tour-capa.jpg" preload="none" playsinline></video>
         <button class="video-play" type="button" aria-label="Reproduzir o tour pela clínica">
@@ -786,7 +791,9 @@
         <span class="tour-video-tag">Tour guiado &middot; 47s</span>
       </div>
     </div>
+  </div>
 
+  <div class="container">
     <div class="tour-gallery">
       <figure class="tour-shot" data-reveal style="--d:0ms">
         <img src="fotos/clinica-01.jpg" alt="Entrada da clínica Dr. Ricardo Ferro" loading="lazy" width="720" height="1280">
