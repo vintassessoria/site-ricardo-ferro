@@ -25,3 +25,7 @@ desktop.ini
 # Fotos originais recebidas por WhatsApp. As versoes usadas no site
 # estao renomeadas em fotos/clinica-01..06.jpg
 WhatsApp Image*.jpeg
+
+# Master do video de tour. A versao usada no site, com faststart, esta
+# em fotos/tour-clinica.mp4
+lowres.mp4

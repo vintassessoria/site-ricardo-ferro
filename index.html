@@ -775,6 +775,18 @@
       <p class="lead" data-reveal>Um ambiente pensado para o seu conforto e privacidade, com equipamentos de última geração.</p>
     </div>
 
+    <!-- Video do tour. preload="none": os 5 MB so baixam se alguem
+         apertar o play. Tem narracao, entao NAO toca sozinho nem mudo. -->
+    <div class="video-wrap video-wrap--sm" data-reveal="zoom">
+      <div class="tour-video">
+        <video src="fotos/tour-clinica.mp4" poster="fotos/tour-capa.jpg" preload="none" playsinline></video>
+        <button class="video-play" type="button" aria-label="Reproduzir o tour pela clínica">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <span class="tour-video-tag">Tour guiado &middot; 47s</span>
+      </div>
+    </div>
+
     <div class="tour-gallery">
       <figure class="tour-shot" data-reveal style="--d:0ms">
         <img src="fotos/clinica-01.jpg" alt="Entrada da clínica Dr. Ricardo Ferro" loading="lazy" width="720" height="1280">

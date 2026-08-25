@@ -308,6 +308,31 @@
     });
   });
 
+  /* ======================================================================
+     5e. VÍDEO DO TOUR
+     Arquivo proprio, com narracao: por isso comeca parado e sem som
+     forcado. O preload="none" segura os 5 MB ate alguem apertar o play;
+     os controles nativos so aparecem depois do primeiro clique.
+     ====================================================================== */
+  var caixaTour = document.querySelector('.tour-video');
+  if (caixaTour) {
+    var videoTour = caixaTour.querySelector('video');
+    var btnTour   = caixaTour.querySelector('.video-play');
+
+    btnTour.addEventListener('click', function () {
+      videoTour.setAttribute('controls', '');
+      caixaTour.classList.add('tocando');
+      var p = videoTour.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+
+    /* se pausar no meio, o botao nao volta: os controles nativos ja
+       assumiram e dois play na tela confundiriam */
+    videoTour.addEventListener('ended', function () {
+      videoTour.currentTime = 0;
+    });
+  }
+
 
   /* ======================================================================
      6. MENU MOBILE

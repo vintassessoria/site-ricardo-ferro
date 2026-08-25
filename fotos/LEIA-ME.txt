@@ -76,7 +76,21 @@ VIDEO DE APRESENTACAO -- ja ativo.
 8) video-capa.jpg  (opcional, 16:9)
    Capa propria para o video. Se nao existir, usa a do YouTube.
 
-9) clinica-01 ate clinica-06  --- JA PRONTOS ---
+9) tour-clinica.mp4 + tour-capa.jpg  --- JA PRONTOS ---
+   Video guiado da clinica, 47s com narracao, no topo da secao de tour.
+   Fica parado com a capa ate alguem apertar o play: preload="none",
+   entao os 5 MB so baixam se a pessoa quiser assistir.
+
+   Veio como lowres.mp4 (640x360). Nao recodifiquei, so movi o indice
+   do fim para o inicio do arquivo (faststart) -- sem isso o navegador
+   teria de baixar os 5 MB inteiros antes de comecar a tocar:
+      ffmpeg -i ENTRADA.mp4 -c copy -movflags +faststart SAIDA.mp4
+
+   A largura na tela fica limitada a 768px de proposito: a fonte tem
+   640px, e esticar mais deixaria a imagem mole. Se um dia vier uma
+   versao em 1080p, da para soltar esse limite no .video-wrap--sm.
+
+10) clinica-01 ate clinica-06  --- JA PRONTOS ---
    Seis fotos da clinica, na secao "Faca um tour pela clinica".
    Sao as fotos enviadas pelo WhatsApp, apenas renomeadas: nao foram
    recortadas nem recomprimidas, para nao perder qualidade.
@@ -102,7 +116,7 @@ VIDEO DE APRESENTACAO -- ja ativo.
    Os videos .mp4 que ocupavam esta secao antes foram removidos. Os
    .MOV originais continuam na pasta do site, fora do repositorio.
 
-10) post-01.jpg / post-02.jpg / post-03.jpg  (16:9)
+11) post-01.jpg / post-02.jpg / post-03.jpg  (16:9)
    Capas dos artigos do blog. Ex.: 1200 x 675 px.
    Os textos dos posts estao no index.html, entre colchetes.
 
