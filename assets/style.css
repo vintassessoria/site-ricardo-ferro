@@ -1521,3 +1521,118 @@ main > section:not(.hero){
 }
 @media (min-width:640px){ .blog-porta-cta{ flex-direction:row; justify-content:center; } }
 .blog-porta-cta .btn-hero{ width:auto; }
+
+/* --- lista de comentários ------------------------------------------------ */
+.com-carregando,
+.com-vazio{ padding:1.5rem 0; font-size:.9375rem; color:var(--muted-fg); }
+
+.com-lista{ display:flex; flex-direction:column; gap:1.25rem; margin-bottom:3rem; }
+
+.com-item{
+  padding:1.25rem; border-radius:.875rem;
+  background:var(--card); box-shadow:var(--shadow-soft);
+}
+.com-topo{ display:flex; align-items:center; gap:.75rem; margin-bottom:.75rem; }
+.com-avatar{
+  flex-shrink:0; width:2.25rem; height:2.25rem; border-radius:9999px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--gradient-primary); color:#fff;
+  font-size:.875rem; font-weight:700;
+}
+.com-nome{ font-size:.9375rem; font-weight:600; color:var(--foreground); }
+.com-data{ font-size:.6875rem; color:var(--muted-fg); }
+.com-texto{ font-size:.9375rem; line-height:1.7; color:var(--foreground); }
+
+/* resposta do médico, destacada para não se confundir com o público */
+.com-resposta{
+  margin-top:1rem; padding:1rem;
+  border-left:3px solid var(--accent);
+  border-radius:0 .625rem .625rem 0;
+  background:var(--muted);
+}
+.com-resposta-quem{
+  font-size:.75rem; font-weight:700; color:var(--secondary);
+  letter-spacing:.04em; text-transform:uppercase; margin-bottom:.375rem;
+}
+.com-resposta p{ font-size:.875rem; line-height:1.65; color:var(--muted-fg); }
+
+/* --- formulário ----------------------------------------------------------- */
+.com-form{
+  padding:1.75rem; border-radius:1rem;
+  background:var(--card); box-shadow:var(--shadow-soft);
+}
+@media (min-width:768px){ .com-form{ padding:2rem; } }
+.com-form h3{ font-size:1.25rem; color:var(--foreground); margin-bottom:.75rem; }
+
+.com-aviso-lgpd{
+  padding:.75rem 1rem; margin-bottom:1.25rem;
+  border-radius:.5rem; background:var(--muted);
+  font-size:.8125rem; line-height:1.6; color:var(--muted-fg);
+}
+.com-aviso-lgpd a{ color:var(--secondary); font-weight:600; text-decoration:underline; }
+
+.com-linha{ display:grid; gap:1rem; }
+@media (min-width:640px){ .com-linha{ grid-template-columns:1fr 1fr; } }
+
+.com-form label{
+  display:block; margin-bottom:1rem;
+  font-size:.8125rem; font-weight:600; color:var(--foreground);
+}
+.com-form label span{ font-weight:400; color:var(--muted-fg); }
+.com-form input[type=text],
+.com-form input[type=email],
+.com-form textarea{
+  display:block; width:100%; margin-top:.375rem;
+  padding:.75rem .875rem;
+  border:1px solid var(--border); border-radius:.5rem;
+  background:var(--background); color:var(--foreground);
+  font:inherit; font-weight:400; font-size:.9375rem;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.com-form textarea{ resize:vertical; min-height:7rem; line-height:1.6; }
+.com-form input:focus,
+.com-form textarea:focus{
+  outline:none; border-color:var(--secondary);
+  box-shadow:0 0 0 3px hsl(var(--ink) / .08);
+}
+
+/* isca invisível para robô: fora da tela, sem display:none — alguns
+   robôs pulam campos escondidos por display */
+.com-isca{
+  position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;
+}
+
+.com-check{
+  display:flex !important; align-items:flex-start; gap:.5rem;
+  font-weight:400 !important; font-size:.8125rem !important;
+  color:var(--muted-fg) !important; line-height:1.55;
+}
+.com-check input{ margin-top:.15rem; flex-shrink:0; }
+
+.com-acoes{ display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin-top:.5rem; }
+.com-acoes .btn-hero{ width:auto; font-size:1rem; padding:.875rem 1.75rem; }
+.com-retorno{ font-size:.8125rem; color:var(--muted-fg); }
+.com-retorno.erro{ color:hsl(0 65% 45%); font-weight:600; }
+.com-retorno.certo{ color:hsl(145 63% 30%); font-weight:600; }
+
+/* --- tela de moderação ---------------------------------------------------- */
+.moderacao{ max-width:48rem; margin-inline:auto; padding:8rem 0 5rem; }
+.mod-login{ display:flex; flex-wrap:wrap; gap:.75rem; align-items:flex-end; }
+.mod-login label{ flex:1; min-width:14rem; font-size:.8125rem; font-weight:600; }
+.mod-item{ padding:1.25rem; border-radius:.875rem; background:var(--card); box-shadow:var(--shadow-soft); margin-bottom:1rem; }
+.mod-item .com-texto{ margin:.75rem 0; }
+.mod-onde{ font-size:.6875rem; color:var(--muted-fg); word-break:break-all; }
+.mod-botoes{ display:flex; flex-wrap:wrap; gap:.625rem; margin-top:1rem; }
+.mod-botoes button{
+  padding:.5rem 1rem; border-radius:.5rem; font-size:.8125rem; font-weight:600;
+  border:1px solid var(--border); background:var(--card); color:var(--foreground);
+  transition:transform .2s ease, border-color .2s ease;
+}
+.mod-botoes button:hover{ transform:translateY(-2px); border-color:var(--secondary); }
+.mod-botoes .aprovar{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.mod-botoes .recusar{ color:hsl(0 65% 45%); }
+.mod-resposta{
+  width:100%; margin-top:.75rem; padding:.625rem .75rem;
+  border:1px solid var(--border); border-radius:.5rem;
+  font:inherit; font-size:.875rem; background:var(--background);
+}

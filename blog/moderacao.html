@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moderação de comentários</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../fotos/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<main class="container moderacao">
+  <h1>Moderação de comentários</h1>
+  <p class="lead" style="margin:1rem 0 2rem">Comentários enviados ficam aqui até serem aprovados. Nada aparece no site antes disso.</p>
+
+  <form class="mod-login" id="formLogin">
+    <label>Senha de moderação
+      <input type="password" id="senha" autocomplete="current-password" style="display:block;width:100%;margin-top:.375rem;padding:.75rem .875rem;border:1px solid var(--border);border-radius:.5rem;font:inherit">
+    </label>
+    <button type="submit" class="btn-hero" style="width:auto">Entrar</button>
+  </form>
+
+  <p class="com-retorno" id="retorno" role="status" style="margin-top:1rem"></p>
+
+  <div id="fila" style="margin-top:2rem"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var senha = sessionStorage.getItem('mod_token') || '';
+  var fila    = document.getElementById('fila');
+  var retorno = document.getElementById('retorno');
+  var form    = document.getElementById('formLogin');
+
+  var MAPA = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return MAPA[c]; }); }
+  function quando(ms) { return new Date(ms).toLocaleString('pt-BR'); }
+
+  function avisar(t, classe) {
+    retorno.textContent = t;
+    retorno.className = 'com-retorno' + (classe ? ' ' + classe : '');
+  }
+
+  function carregar() {
+    if (!senha) return;
+    fila.innerHTML = '<p class="com-carregando">Carregando fila…</p>';
+
+    fetch('/api/comentarios?fila=1', { headers: { Authorization: 'Bearer ' + senha } })
+      .then(function (r) {
+        if (r.status === 401) throw new Error('senha');
+        if (r.status === 503) throw new Error('banco');
+        return r.json();
+      })
+      .then(function (j) {
+        form.style.display = 'none';
+        avisar('');
+        var itens = j.itens || [];
+        if (!itens.length) {
+          fila.innerHTML = '<p class="com-vazio">Nenhum comentário aguardando aprovação.</p>';
+          return;
+        }
+        fila.innerHTML = itens.map(function (c) {
+          return '<div class="mod-item" data-id="' + esc(c.id) + '">' +
+                   '<p class="com-nome">' + esc(c.nome) + '</p>' +
+                   '<p class="com-data">' + quando(c.data) + (c.email ? ' — ' + esc(c.email) : '') + '</p>' +
+                   '<p class="com-texto">' + esc(c.texto).replace(/\n/g, '<br>') + '</p>' +
+                   '<p class="mod-onde">artigo: ' + esc(c.slug) + '</p>' +
+                   '<textarea class="mod-resposta" rows="2" placeholder="Resposta do Dr. Ricardo (opcional, aparece junto do comentário)"></textarea>' +
+                   '<div class="mod-botoes">' +
+                     '<button class="aprovar">Aprovar</button>' +
+                     '<button class="recusar">Recusar</button>' +
+                   '</div>' +
+                 '</div>';
+        }).join('');
+      })
+      .catch(function (e) {
+        form.style.display = '';
+        if (e.message === 'senha') { sessionStorage.removeItem('mod_token'); senha = ''; return avisar('Senha incorreta.', 'erro'); }
+        if (e.message === 'banco') return avisar('O banco ainda não foi criado na Vercel.', 'erro');
+        avisar('Não foi possível carregar a fila.', 'erro');
+      });
+  }
+
+  function moderar(id, acao, resposta, caixa) {
+    fetch('/api/comentarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + senha },
+      body: JSON.stringify({ acao: acao, id: id, resposta: resposta })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) return avisar('Falhou: ' + (res.j.erro || 'erro'), 'erro');
+        caixa.remove();
+        avisar(acao === 'aprovar' ? 'Comentário publicado.' : 'Comentário recusado.', 'certo');
+        if (!fila.querySelector('.mod-item')) fila.innerHTML = '<p class="com-vazio">Nenhum comentário aguardando aprovação.</p>';
+      })
+      .catch(function () { avisar('Sem conexão com o servidor.', 'erro'); });
+  }
+
+  fila.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b) return;
+    var caixa = b.closest('.mod-item');
+    var acao = b.classList.contains('aprovar') ? 'aprovar' : 'recusar';
+    moderar(caixa.getAttribute('data-id'), acao, caixa.querySelector('.mod-resposta').value, caixa);
+  });
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    senha = document.getElementById('senha').value.trim();
+    if (!senha) return avisar('Informe a senha.', 'erro');
+    sessionStorage.setItem('mod_token', senha);
+    carregar();
+  });
+
+  if (senha) carregar();
+})();
+</script>
+
+</body>
+</html>
