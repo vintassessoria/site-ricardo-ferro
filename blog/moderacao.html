@@ -15,11 +15,20 @@
 
 <main class="container moderacao">
   <h1>Moderação de comentários</h1>
-  <p class="lead" style="margin:1rem 0 2rem">Comentários enviados ficam aqui até serem aprovados. Nada aparece no site antes disso.</p>
+  <p class="lead" id="subtitulo">Carregando…</p>
 
-  <form class="mod-login" id="formLogin">
+  <!-- primeiro acesso: define a senha -->
+  <form class="mod-login" id="formCriar" hidden>
+    <label>Crie a senha de moderação
+      <input type="password" id="senhaNova" minlength="12" autocomplete="new-password">
+    </label>
+    <button type="submit" class="btn-hero" style="width:auto">Criar senha</button>
+  </form>
+
+  <!-- acessos seguintes -->
+  <form class="mod-login" id="formEntrar" hidden>
     <label>Senha de moderação
-      <input type="password" id="senha" autocomplete="current-password" style="display:block;width:100%;margin-top:.375rem;padding:.75rem .875rem;border:1px solid var(--border);border-radius:.5rem;font:inherit">
+      <input type="password" id="senha" autocomplete="current-password">
     </label>
     <button type="submit" class="btn-hero" style="width:auto">Entrar</button>
   </form>
@@ -33,32 +42,67 @@
 (function () {
   'use strict';
 
-  var senha = sessionStorage.getItem('mod_token') || '';
-  var fila    = document.getElementById('fila');
-  var retorno = document.getElementById('retorno');
-  var form    = document.getElementById('formLogin');
+  var senha      = sessionStorage.getItem('mod_token') || '';
+  var fila       = document.getElementById('fila');
+  var retorno    = document.getElementById('retorno');
+  var subtitulo  = document.getElementById('subtitulo');
+  var formCriar  = document.getElementById('formCriar');
+  var formEntrar = document.getElementById('formEntrar');
 
   var MAPA = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return MAPA[c]; }); }
   function quando(ms) { return new Date(ms).toLocaleString('pt-BR'); }
 
   function avisar(t, classe) {
-    retorno.textContent = t;
+    retorno.textContent = t || '';
     retorno.className = 'com-retorno' + (classe ? ' ' + classe : '');
   }
 
+  function mostrar(qual) {
+    formCriar.hidden  = qual !== 'criar';
+    formEntrar.hidden = qual !== 'entrar';
+  }
+
+  /* --- descobre se o site ja tem senha definida --------------------- */
+  function verificarEstado() {
+    fetch('/api/comentarios?estado=1')
+      .then(function (r) {
+        if (r.status === 503) throw new Error('banco');
+        if (r.status === 404) throw new Error('sem-api');
+        return r.json();
+      })
+      .then(function (j) {
+        if (!j.senhaDefinida) {
+          subtitulo.textContent = 'Primeiro acesso. Escolha uma senha de pelo menos 12 caracteres — é ela que vai proteger esta tela.';
+          mostrar('criar');
+          return;
+        }
+        subtitulo.textContent = 'Comentários enviados ficam aqui até serem aprovados. Nada aparece no site antes disso.';
+        if (senha) { carregar(); } else { mostrar('entrar'); }
+      })
+      .catch(function (e) {
+        mostrar(null);
+        if (e.message === 'banco') {
+          subtitulo.textContent = 'O banco ainda não foi criado na Vercel. Veja o passo a passo em COMENTARIOS.md.';
+        } else if (e.message === 'sem-api') {
+          subtitulo.textContent = 'A função /api/comentarios não respondeu. Em preview local ela não roda — teste no site publicado.';
+        } else {
+          subtitulo.textContent = 'Não foi possível falar com o servidor.';
+        }
+      });
+  }
+
+  /* --- fila --------------------------------------------------------- */
   function carregar() {
-    if (!senha) return;
     fila.innerHTML = '<p class="com-carregando">Carregando fila…</p>';
 
     fetch('/api/comentarios?fila=1', { headers: { Authorization: 'Bearer ' + senha } })
       .then(function (r) {
         if (r.status === 401) throw new Error('senha');
-        if (r.status === 503) throw new Error('banco');
         return r.json();
       })
       .then(function (j) {
-        form.style.display = 'none';
+        mostrar(null);
         avisar('');
         var itens = j.itens || [];
         if (!itens.length) {
@@ -80,9 +124,13 @@
         }).join('');
       })
       .catch(function (e) {
-        form.style.display = '';
-        if (e.message === 'senha') { sessionStorage.removeItem('mod_token'); senha = ''; return avisar('Senha incorreta.', 'erro'); }
-        if (e.message === 'banco') return avisar('O banco ainda não foi criado na Vercel.', 'erro');
+        fila.innerHTML = '';
+        if (e.message === 'senha') {
+          sessionStorage.removeItem('mod_token');
+          senha = '';
+          mostrar('entrar');
+          return avisar('Senha incorreta.', 'erro');
+        }
         avisar('Não foi possível carregar a fila.', 'erro');
       });
   }
@@ -111,7 +159,33 @@
     moderar(caixa.getAttribute('data-id'), acao, caixa.querySelector('.mod-resposta').value, caixa);
   });
 
-  form.addEventListener('submit', function (ev) {
+  formCriar.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var nova = document.getElementById('senhaNova').value;
+    if (nova.length < 12) return avisar('Use pelo menos 12 caracteres.', 'erro');
+    avisar('Criando…');
+
+    fetch('/api/comentarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'definir-senha', senha: nova })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          if (res.j.erro === 'senha-ja-definida') { mostrar('entrar'); return avisar('Já existe senha definida. Digite-a abaixo.', 'erro'); }
+          return avisar('Não foi possível criar: ' + (res.j.erro || 'erro'), 'erro');
+        }
+        senha = nova;
+        sessionStorage.setItem('mod_token', senha);
+        subtitulo.textContent = 'Senha criada. Guarde-a: não há como recuperá-la, só apagar a chave no banco e criar outra.';
+        avisar('Senha criada.', 'certo');
+        carregar();
+      })
+      .catch(function () { avisar('Sem conexão com o servidor.', 'erro'); });
+  });
+
+  formEntrar.addEventListener('submit', function (ev) {
     ev.preventDefault();
     senha = document.getElementById('senha').value.trim();
     if (!senha) return avisar('Informe a senha.', 'erro');
@@ -119,7 +193,7 @@
     carregar();
   });
 
-  if (senha) carregar();
+  verificarEstado();
 })();
 </script>
 
