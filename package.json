@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "site-ricardo-ferro",
+  "description": "Landing page do Dr. Ricardo Ferro. O site em si e estatico; esta dependencia serve apenas a funcao /api/comentarios, que fala com o Redis por TCP.",
+  "dependencies": {
+    "redis": "^4.7.0"
+  }
+}

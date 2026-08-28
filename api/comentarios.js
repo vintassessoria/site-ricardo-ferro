@@ -1,14 +1,15 @@
 /* ==========================================================================
    API de comentários — Vercel Serverless Function
 
-   Sem dependência de npm: fala com o Redis pela API REST usando o fetch
-   que já vem no Node. Por isso o projeto continua sem build.
+   Fala com o Redis de dois jeitos: por TCP (Redis Cloud, usando o pacote
+   redis) ou pela API REST (Upstash, usando fetch). Escolhe sozinho pelo
+   formato da variavel que a Vercel injetou.
 
    CONFIGURAÇÃO — só uma coisa é obrigatória:
 
      Criar o banco na Vercel (Storage > Create Database > Redis).
      Ao conectá-lo ao projeto, a Vercel injeta sozinha:
-        KV_REST_API_URL  e  KV_REST_API_TOKEN
+        KV_REDIS_URL (TCP)  ou  KV_REST_API_URL + KV_REST_API_TOKEN (REST)
 
    A senha de moderação é definida pela própria tela /blog/moderacao.html
    na primeira vez que ela for aberta, e fica guardada no Redis com
@@ -28,31 +29,38 @@
 
 const crypto = require('crypto');
 
-/* Acha a conexao do Redis sem depender do prefixo que foi escolhido na
-   hora de criar o banco. Tenta os nomes conhecidos e, se nao achar,
-   varre o ambiente atras de qualquer par *_REST_API_URL + o _TOKEN
-   correspondente. Assim funciona com prefixo KV, STORAGE, UPSTASH ou
-   qualquer outro que a pessoa tenha digitado. */
+/* Acha a conexao do Redis. Aceita dois formatos:
+   - REST (Upstash): par *_REST_API_URL + *_REST_API_TOKEN, falado por fetch
+   - TCP (Redis Cloud): uma URL redis:// ou rediss://, falada pelo cliente
+   Assim funciona com qualquer banco que a Vercel ofereca, e com qualquer
+   prefixo de variavel que tenha sido escolhido na criacao. */
 function acharConexao() {
   const e = process.env;
+
   const url   = e.KV_REST_API_URL   || e.UPSTASH_REDIS_REST_URL;
   const token = e.KV_REST_API_TOKEN || e.UPSTASH_REDIS_REST_TOKEN;
-  if (url && token) return { url, token };
+  if (url && token) return { modo: 'rest', url: url, token: token };
 
   const SUF = '_REST_API_URL';
   for (const chave of Object.keys(e)) {
     if (!chave.endsWith(SUF)) continue;
     const base = chave.slice(0, -SUF.length);
-    /* o par exato: o READ_ONLY_TOKEN nao serve, ele nao grava */
+    /* o READ_ONLY_TOKEN nao serve: ele nao grava */
     const t = e[base + '_REST_API_TOKEN'];
-    if (e[chave] && t) return { url: e[chave], token: t };
+    if (e[chave] && t) return { modo: 'rest', url: e[chave], token: t };
   }
-  return { url: null, token: null };
+
+  for (const chave of Object.keys(e)) {
+    const v = e[chave];
+    if (typeof v === 'string' && /^rediss?:\/\//.test(v)) return { modo: 'tcp', url: v };
+  }
+  return { modo: null };
 }
 
 const conexao   = acharConexao();
-const URL_REDIS = conexao.url;
-const TOKEN     = conexao.token;
+const URL_REDIS = conexao.url || null;
+const TOKEN     = conexao.token || null;
+const MODO      = conexao.modo;
 const SENHA_ENV = process.env.MODERACAO_TOKEN || '';
 
 const LIMITE_NOME = 60;
@@ -60,11 +68,32 @@ const LIMITE_TEXTO = 2000;
 const MAX_POR_MINUTO = 3;
 const MIN_SENHA = 12;
 
+/* O cliente TCP é reaproveitado entre invocações quentes: abrir conexão
+   a cada comentário custaria mais que o próprio comando. */
+let clienteTcp = null;
+
+async function conectarTcp() {
+  if (clienteTcp && clienteTcp.isOpen) return clienteTcp;
+  const { createClient } = require('redis');
+  clienteTcp = createClient({ url: URL_REDIS });
+  /* sem este ouvinte, um erro de socket derruba a função inteira */
+  clienteTcp.on('error', function () {});
+  await clienteTcp.connect();
+  return clienteTcp;
+}
+
 async function redis(comando) {
+  const partes = comando.map(String);
+
+  if (MODO === 'tcp') {
+    const c = await conectarTcp();
+    return c.sendCommand(partes);
+  }
+
   const r = await fetch(URL_REDIS, {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + TOKEN, 'Content-Type': 'application/json' },
-    body: JSON.stringify(comando)
+    body: JSON.stringify(partes)
   });
   if (!r.ok) throw new Error('redis ' + r.status);
   return (await r.json()).result;
@@ -128,10 +157,11 @@ module.exports = async (req, res) => {
      descobrir como o banco chamou a conexao. Remover depois. */
   if (req.method === 'GET' && req.query.diag) {
     const nomes = Object.keys(process.env).filter(function (k) { return /REDIS|KV|UPSTASH|STORAGE/i.test(k); });
-    return res.status(200).json({ nomes: nomes, achouConexao: !!(URL_REDIS && TOKEN) });
+    return res.status(200).json({ nomes: nomes, modo: MODO });
   }
 
-  if (!URL_REDIS || !TOKEN) {
+  /* no modo TCP não existe token: a credencial vem dentro da própria URL */
+  if (!MODO) {
     return res.status(503).json({ erro: 'banco-nao-configurado' });
   }
 
@@ -148,10 +178,14 @@ module.exports = async (req, res) => {
       if (!(await autorizado(req))) return res.status(401).json({ erro: 'nao-autorizado' });
       const bruto = await redis(['HGETALL', 'pend']);
       const itens = [];
-      /* o REST devolve [campo, valor, campo, valor, ...] */
-      for (let i = 1; i < (bruto || []).length; i += 2) {
-        try { itens.push(JSON.parse(bruto[i])); } catch (e) { /* item corrompido: ignora */ }
-      }
+      /* HGETALL volta como lista achatada [campo, valor, ...] em um
+         cliente e como objeto {campo: valor} em outro. Aceita os dois. */
+      const valores = Array.isArray(bruto)
+        ? bruto.filter(function (_, i) { return i % 2 === 1; })
+        : Object.values(bruto || {});
+      valores.forEach(function (v) {
+        try { itens.push(JSON.parse(String(v))); } catch (e) { /* item corrompido: ignora */ }
+      });
       itens.sort((a, b) => b.data - a.data);
       return res.status(200).json({ itens });
     }
