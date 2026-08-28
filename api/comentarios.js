@@ -102,7 +102,13 @@ async function redis(comando) {
 /* aceita só o que parece caminho de artigo, para ninguém inventar chave */
 function limparSlug(s) {
   if (typeof s !== 'string') return null;
-  const limpo = s.trim().toLowerCase().replace(/[^a-z0-9/_.-]/g, '').slice(0, 120);
+  const limpo = s.trim().toLowerCase()
+    .replace(/[^a-z0-9/_.-]/g, '')
+    /* mesma normalizacao do front: .html e /index sao removidos, para
+       que as duas formas da URL caiam na mesma discussao */
+    .replace(/\.html$/, '')
+    .replace(/(^|\/)index$/, '')
+    .slice(0, 120);
   return limpo || null;
 }
 

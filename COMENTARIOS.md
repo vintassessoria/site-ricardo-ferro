@@ -29,7 +29,7 @@ Depois disso, os comentários já funcionam.
 Não é variável de ambiente. Abra:
 
 ```
-https://site-ricardo-ferro.vercel.app/blog/moderacao.html
+https://www.drricardoferro.com/blog/moderacao.html
 ```
 
 Na primeira vez, a tela pede para **criar** a senha (mínimo 12

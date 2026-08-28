@@ -11,9 +11,15 @@
   var area = document.getElementById('area-comentarios');
   if (!area) return;
 
-  /* identifica o artigo pelo caminho, sem query string: assim um link
-     com utm_ nao cria uma discussao separada */
-  var slug = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase() || 'index';
+  /* Identifica o artigo pelo caminho, sem query string: assim um link com
+     utm_ nao cria uma discussao separada. O .html final tambem sai, senao
+     /blog/artigo e /blog/artigo.html seriam duas discussoes diferentes —
+     e as duas formas respondem, por causa do cleanUrls. */
+  var slug = location.pathname
+    .replace(/^\/+|\/+$/g, '')
+    .replace(/\.html$/i, '')
+    .replace(/(^|\/)index$/i, '')
+    .toLowerCase() || 'home';
 
   var MAPA = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 
