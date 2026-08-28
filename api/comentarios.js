@@ -28,8 +28,31 @@
 
 const crypto = require('crypto');
 
-const URL_REDIS = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN     = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+/* Acha a conexao do Redis sem depender do prefixo que foi escolhido na
+   hora de criar o banco. Tenta os nomes conhecidos e, se nao achar,
+   varre o ambiente atras de qualquer par *_REST_API_URL + o _TOKEN
+   correspondente. Assim funciona com prefixo KV, STORAGE, UPSTASH ou
+   qualquer outro que a pessoa tenha digitado. */
+function acharConexao() {
+  const e = process.env;
+  const url   = e.KV_REST_API_URL   || e.UPSTASH_REDIS_REST_URL;
+  const token = e.KV_REST_API_TOKEN || e.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) return { url, token };
+
+  const SUF = '_REST_API_URL';
+  for (const chave of Object.keys(e)) {
+    if (!chave.endsWith(SUF)) continue;
+    const base = chave.slice(0, -SUF.length);
+    /* o par exato: o READ_ONLY_TOKEN nao serve, ele nao grava */
+    const t = e[base + '_REST_API_TOKEN'];
+    if (e[chave] && t) return { url: e[chave], token: t };
+  }
+  return { url: null, token: null };
+}
+
+const conexao   = acharConexao();
+const URL_REDIS = conexao.url;
+const TOKEN     = conexao.token;
 const SENHA_ENV = process.env.MODERACAO_TOKEN || '';
 
 const LIMITE_NOME = 60;
