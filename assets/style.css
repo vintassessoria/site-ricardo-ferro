@@ -1355,3 +1355,169 @@ main > section:not(.hero){
 @media (min-width:768px){ .footer-legal .sep{ display:inline; } }
 .footer-legal a{ transition:color .2s ease; }
 .footer-legal a:hover{ color:#fff; }
+
+/* ==========================================================================
+   PÁGINAS DO BLOG
+   ========================================================================== */
+
+/* Sem hero escuro aqui: o header precisa nascer claro. O script alterna
+   a classe .scrolled pela rolagem, entao o estado solido e forcado por
+   CSS em vez de depender dela. */
+.pagina-blog .site-header{
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  box-shadow:var(--shadow-soft);
+}
+.pagina-blog .nav-desktop a{ color:var(--foreground); }
+.pagina-blog .brand-light{ opacity:0; }
+.pagina-blog .brand-dark{ opacity:1; }
+.pagina-blog .burger{ color:var(--primary); }
+.pagina-blog .nav-desktop a.active{ color:var(--primary); }
+.pagina-blog .nav-desktop a.active::after{ transform:scaleX(1); }
+
+/* --- banner ------------------------------------------------------------- */
+.blog-hero{
+  position:relative; overflow:hidden;
+  background:var(--primary); color:#fff;
+  padding:9rem 0 4rem;
+  text-align:center;
+}
+@media (min-width:768px){ .blog-hero{ padding:11rem 0 5rem; } }
+.blog-hero-media{ position:absolute; inset:0; pointer-events:none; }
+.blog-hero-media img{ width:100%; height:100%; object-fit:cover; opacity:.18; }
+.blog-hero-media::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom, hsl(var(--ink) / .55), hsl(var(--ink) / .9));
+}
+.blog-hero-inner{ position:relative; z-index:1; }
+.blog-hero .eyebrow{ color:rgba(255,255,255,.72); }
+.blog-hero .eyebrow::after{ left:50%; margin-left:-1.625rem; }
+.blog-hero h1{
+  font-size:2.5rem; font-weight:700; color:#fff; line-height:1.1; margin-bottom:1rem;
+}
+@media (min-width:768px){ .blog-hero h1{ font-size:4rem; } }
+.blog-hero .lead{ color:rgba(255,255,255,.85); max-width:34rem; margin-inline:auto; }
+
+.blog-aviso{
+  max-width:38rem; margin:3rem auto 0; padding:1rem 1.25rem;
+  border:1px dashed var(--border); border-radius:.75rem;
+  background:var(--card);
+  font-size:.8125rem; color:var(--muted-fg); text-align:center;
+}
+
+/* --- artigo -------------------------------------------------------------- */
+.artigo-largura{ max-width:44rem; }   /* medida de leitura confortavel */
+
+.artigo-topo{ padding:8rem 0 2rem; }
+@media (min-width:768px){ .artigo-topo{ padding:10rem 0 2.5rem; } }
+
+.voltar{
+  display:inline-flex; align-items:center; gap:.5rem; margin-bottom:1.5rem;
+  font-size:.875rem; font-weight:600; color:var(--secondary);
+  transition:gap .3s ease;
+}
+.voltar:hover{ gap:.75rem; }
+
+.artigo-topo h1{
+  font-size:2rem; line-height:1.2; color:var(--foreground);
+  margin:.75rem 0 1rem;
+}
+@media (min-width:768px){ .artigo-topo h1{ font-size:2.75rem; } }
+
+.artigo-meta{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem;
+  font-size:.8125rem; color:var(--muted-fg);
+}
+.artigo-meta .sep{ opacity:.5; }
+
+.artigo-capa{ margin-bottom:2.5rem; }
+
+.artigo-corpo{ font-size:1.0625rem; line-height:1.8; color:var(--foreground); }
+.artigo-corpo > * + *{ margin-top:1.5rem; }
+.artigo-corpo .destaque{ font-size:1.25rem; line-height:1.7; color:var(--secondary); }
+.artigo-corpo h2{
+  font-size:1.5rem; line-height:1.3; color:var(--foreground);
+  margin-top:2.5rem;
+}
+@media (min-width:768px){ .artigo-corpo h2{ font-size:1.875rem; } }
+.artigo-corpo ul{ padding-left:1.25rem; list-style:disc; }
+.artigo-corpo li + li{ margin-top:.5rem; }
+.artigo-corpo blockquote{
+  margin-inline:0; padding:1.25rem 1.5rem;
+  border-left:3px solid var(--accent);
+  background:var(--muted); border-radius:0 .75rem .75rem 0;
+  font-size:1.125rem; color:var(--foreground);
+}
+
+.artigo-disclaimer{
+  margin-top:3rem; padding:1rem 1.25rem;
+  border-radius:.75rem; background:var(--muted);
+  font-size:.8125rem; line-height:1.6; color:var(--muted-fg);
+}
+
+.artigo-autor{
+  display:flex; gap:1.25rem; align-items:flex-start;
+  margin-top:2.5rem; padding-top:2.5rem;
+  border-top:1px solid var(--border);
+}
+.artigo-autor img{
+  flex-shrink:0; width:5rem; height:5rem; border-radius:9999px; object-fit:cover;
+}
+.autor-nome{ font-family:'DM Serif Display',Georgia,serif; font-size:1.25rem; color:var(--foreground); }
+.autor-cargo{ font-size:.8125rem; color:var(--secondary); font-weight:600; margin-top:.125rem; }
+.autor-bio{ font-size:.875rem; color:var(--muted-fg); line-height:1.65; margin-top:.5rem; }
+
+.artigo-cta{
+  display:flex; flex-direction:column; gap:1.25rem;
+  margin-top:2.5rem; padding:1.75rem;
+  border-radius:1rem; background:var(--gradient-primary); color:#fff;
+  box-shadow:var(--shadow-medium);
+}
+@media (min-width:768px){ .artigo-cta{ flex-direction:row; align-items:center; justify-content:space-between; padding:2rem 2.25rem; } }
+.artigo-cta h3{ font-size:1.25rem; color:#fff; margin-bottom:.25rem; }
+.artigo-cta p{ font-size:.9375rem; color:rgba(255,255,255,.85); }
+.artigo-cta .btn-hero{ background:#fff; color:var(--primary); box-shadow:none; flex-shrink:0; }
+.artigo-cta .btn-hero:hover{ background:rgba(255,255,255,.9); box-shadow:none; }
+
+/* --- comentários --------------------------------------------------------- */
+.comentarios{ margin-top:3.5rem; padding-bottom:5rem; }
+.comentarios > h2{
+  font-size:1.5rem; color:var(--foreground); margin-bottom:1.5rem;
+  padding-bottom:.75rem; border-bottom:1px solid var(--border);
+}
+.comentarios-aviso{
+  padding:1.75rem; border-radius:1rem;
+  border:1px dashed var(--border); background:var(--muted);
+  text-align:center;
+}
+.comentarios-aviso p{ font-size:.9375rem; color:var(--muted-fg); line-height:1.7; }
+.comentarios-aviso p + p{ margin-top:.5rem; }
+.comentarios-aviso strong{ color:var(--foreground); }
+.comentarios-aviso code{
+  padding:.125rem .375rem; border-radius:.25rem;
+  background:var(--card); font-size:.8125rem;
+}
+.comentarios-aviso .btn-outline{ margin-top:1.25rem; }
+
+/* --- porta de entrada do blog, na home ----------------------------------- */
+.blog-porta{
+  max-width:38rem; margin-inline:auto;
+  padding:2.5rem 1.5rem; border-radius:1.25rem;
+  background:var(--card); box-shadow:var(--shadow-soft);
+  text-align:center;
+}
+@media (min-width:768px){ .blog-porta{ padding:3rem; } }
+.blog-porta-ico{
+  width:3.5rem; height:3.5rem; margin:0 auto 1.25rem;
+  border-radius:1rem; display:flex; align-items:center; justify-content:center;
+  background:var(--gradient-primary); color:#fff;
+}
+.blog-porta-ico svg{ width:1.75rem; height:1.75rem; }
+.blog-porta h3{ font-size:1.375rem; color:var(--foreground); margin-bottom:.75rem; }
+@media (min-width:768px){ .blog-porta h3{ font-size:1.625rem; } }
+.blog-porta > p{ max-width:30rem; margin-inline:auto; color:var(--muted-fg); line-height:1.7; }
+.blog-porta-cta{
+  display:flex; flex-direction:column; align-items:center; gap:.875rem; margin-top:2rem;
+}
+@media (min-width:640px){ .blog-porta-cta{ flex-direction:row; justify-content:center; } }
+.blog-porta-cta .btn-hero{ width:auto; }
