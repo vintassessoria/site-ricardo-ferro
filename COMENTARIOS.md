@@ -15,7 +15,10 @@ que é onde o site já roda → **Connect** ao projeto.
 Ao conectar, a Vercel injeta sozinha as variáveis `KV_REST_API_URL` e
 `KV_REST_API_TOKEN`. **Você não copia chave nenhuma.**
 
-O plano gratuito cobre 10.000 comandos por dia. Um comentário gasta ~3.
+O plano gratuito do Upstash cobre **500 mil comandos por mês**, 256 MB de
+dados e 10 GB de trafego. Abrir um artigo gasta 1 comando; enviar um
+comentario gasta 3. Para um blog de clinica isso nao chega perto do teto.
+O cartao de credito so entra se voce quiser passar para o plano pago.
 
 Depois disso, os comentários já funcionam.
 
@@ -105,3 +108,32 @@ esses dados.
 
 Desconecte o banco na Vercel. A área de comentários volta a mostrar o
 aviso com o atalho para o WhatsApp, sem quebrar nada.
+
+---
+
+## Custos
+
+**O banco é gratuito.** O plano free do Upstash dá 500 mil comandos por
+mês, 256 MB e 10 GB de tráfego, sem pedir cartão. Abrir um artigo gasta
+1 comando; enviar um comentário gasta 3. Um blog de clínica não encosta
+nesse teto.
+
+**As funções também.** O plano Hobby da Vercel inclui até 1 milhão de
+invocações de função por mês.
+
+### Mas tem um porém, e ele não é sobre comentários
+
+As Fair Use Guidelines da Vercel dizem, com todas as letras, que o plano
+Hobby é **só para uso pessoal não comercial**, e que uso comercial exige
+Pro ou Enterprise. A definição deles inclui explicitamente projetos em
+que um funcionário ou consultor pago escreveu o código.
+
+O site de um consultório médico, feito por uma agência, se encaixa
+nessa definição. **Isso já valia antes dos comentários** — vale desde o
+primeiro deploy.
+
+O plano Pro custa US$ 20/mês e vem com US$ 20 de crédito de uso
+incluído, o que na prática cobre o consumo de um site desse porte.
+
+Conferido em vercel.com/pricing e vercel.com/docs/limits/fair-use-guidelines.
+Preço muda; vale reconferir antes de decidir.
