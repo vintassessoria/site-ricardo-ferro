@@ -123,6 +123,14 @@ async function autorizado(req) {
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
 
+  /* ---------- diagnostico temporario -------------------------------
+     Devolve so os NOMES das variaveis, nunca os valores. Serve para
+     descobrir como o banco chamou a conexao. Remover depois. */
+  if (req.method === 'GET' && req.query.diag) {
+    const nomes = Object.keys(process.env).filter(function (k) { return /REDIS|KV|UPSTASH|STORAGE/i.test(k); });
+    return res.status(200).json({ nomes: nomes, achouConexao: !!(URL_REDIS && TOKEN) });
+  }
+
   if (!URL_REDIS || !TOKEN) {
     return res.status(503).json({ erro: 'banco-nao-configurado' });
   }
