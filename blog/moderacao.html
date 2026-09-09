@@ -36,6 +36,26 @@
   <p class="com-retorno" id="retorno" role="status" style="margin-top:1rem"></p>
 
   <div id="fila" style="margin-top:2rem"></div>
+
+  <!-- so aparece depois de entrar -->
+  <details class="mod-trocar" id="blocoTrocar" hidden>
+    <summary>Trocar a senha</summary>
+    <form id="formTrocar">
+      <p class="mod-dica">
+        Troque sempre que alguém deixar a clínica, ou se a senha tiver
+        circulado por WhatsApp, e-mail ou conversa com terceiros. A troca
+        vale para todo mundo: não existe senha por pessoa.
+      </p>
+      <label>Nova senha (mínimo 12 caracteres)
+        <input type="password" id="senhaTrocar" minlength="12" autocomplete="new-password">
+      </label>
+      <label>Repita a nova senha
+        <input type="password" id="senhaTrocar2" minlength="12" autocomplete="new-password">
+      </label>
+      <button type="submit" class="btn-hero" style="width:auto">Trocar senha</button>
+      <p class="com-retorno" id="retornoTrocar" role="status"></p>
+    </form>
+  </details>
 </main>
 
 <script>
@@ -46,8 +66,9 @@
   var fila       = document.getElementById('fila');
   var retorno    = document.getElementById('retorno');
   var subtitulo  = document.getElementById('subtitulo');
-  var formCriar  = document.getElementById('formCriar');
-  var formEntrar = document.getElementById('formEntrar');
+  var formCriar   = document.getElementById('formCriar');
+  var formEntrar  = document.getElementById('formEntrar');
+  var blocoTrocar = document.getElementById('blocoTrocar');
 
   var MAPA = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return MAPA[c]; }); }
@@ -99,10 +120,12 @@
     fetch('/api/comentarios?fila=1', { headers: { Authorization: 'Bearer ' + senha } })
       .then(function (r) {
         if (r.status === 401) throw new Error('senha');
+        if (r.status === 429) throw new Error('bloqueado');
         return r.json();
       })
       .then(function (j) {
         mostrar(null);
+        blocoTrocar.hidden = false;
         avisar('');
         var itens = j.itens || [];
         if (!itens.length) {
@@ -125,6 +148,13 @@
       })
       .catch(function (e) {
         fila.innerHTML = '';
+        blocoTrocar.hidden = true;
+        if (e.message === 'bloqueado') {
+          sessionStorage.removeItem('mod_token');
+          senha = '';
+          mostrar(null);
+          return avisar('Muitas tentativas erradas. Espere 15 minutos e tente de novo.', 'erro');
+        }
         if (e.message === 'senha') {
           sessionStorage.removeItem('mod_token');
           senha = '';
@@ -191,6 +221,48 @@
     if (!senha) return avisar('Informe a senha.', 'erro');
     sessionStorage.setItem('mod_token', senha);
     carregar();
+  });
+
+  document.getElementById('formTrocar').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var caixa1 = document.getElementById('senhaTrocar');
+    var caixa2 = document.getElementById('senhaTrocar2');
+    var aviso  = document.getElementById('retornoTrocar');
+
+    function dizer(t, classe) {
+      aviso.textContent = t;
+      aviso.className = 'com-retorno' + (classe ? ' ' + classe : '');
+    }
+
+    var nova = caixa1.value;
+    if (nova.length < 12) return dizer('Use pelo menos 12 caracteres.', 'erro');
+    if (nova !== caixa2.value) return dizer('As duas senhas não são iguais.', 'erro');
+    dizer('Trocando…');
+
+    fetch('/api/comentarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + senha },
+      body: JSON.stringify({ acao: 'trocar-senha', nova: nova })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          var MSG = {
+            'senha-curta': 'Use pelo menos 12 caracteres.',
+            'senha-igual': 'A nova senha é igual à atual.',
+            'senha-bloqueada': 'Muitas tentativas erradas. Espere 15 minutos.',
+            'nao-autorizado': 'Sua sessão expirou. Recarregue a página e entre de novo.',
+            'senha-por-variavel': 'Esta senha está fixada em variável de ambiente na Vercel; troque por lá.'
+          };
+          return dizer(MSG[res.j.erro] || 'Não foi possível trocar.', 'erro');
+        }
+        /* a sessao continua valendo: a senha nova passa a ser a do cabecalho */
+        senha = nova;
+        sessionStorage.setItem('mod_token', senha);
+        caixa1.value = caixa2.value = '';
+        dizer('Senha trocada. A anterior não vale mais — avise quem usa esta tela.', 'certo');
+      })
+      .catch(function () { dizer('Sem conexão com o servidor.', 'erro'); });
   });
 
   verificarEstado();

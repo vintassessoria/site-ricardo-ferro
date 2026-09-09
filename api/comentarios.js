@@ -67,6 +67,8 @@ const LIMITE_NOME = 60;
 const LIMITE_TEXTO = 2000;
 const MAX_POR_MINUTO = 3;
 const MIN_SENHA = 12;
+const MAX_ERROS_SENHA = 5;   /* erros seguidos antes de travar o IP */
+const JANELA_ERRO = 900;     /* segundos que a trava dura */
 
 /* O cliente TCP é reaproveitado entre invocações quentes: abrir conexão
    a cada comentário custaria mais que o próprio comando. */
@@ -142,17 +144,43 @@ function derivar(senha, sal) {
   return crypto.scryptSync(String(senha), sal, 32).toString('hex');
 }
 
-async function autorizado(req) {
+/* Confere a senha e freia tentativa em sequência. Sem isso, o endereço
+   da tela é adivinhável e a senha pode ser testada à vontade: bastaria
+   tempo. Conta só os erros — um acerto zera o contador, então quem sabe
+   a senha nunca é travado. */
+async function conferirSenha(req) {
   const dada = senhaEnviada(req);
-  if (!dada) return false;
+  if (!dada) return 'ausente';
 
-  if (SENHA_ENV) return iguais(dada, SENHA_ENV);
+  const chave = 'rlm:' + ipDe(req);
+  const erros = Number((await redis(['GET', chave])) || 0);
+  if (erros >= MAX_ERROS_SENHA) return 'bloqueado';
 
-  const guardada = await redis(['GET', 'cfg:senha']);
-  if (!guardada) return false;
-  const [sal, hash] = String(guardada).split(':');
-  if (!sal || !hash) return false;
-  return iguais(derivar(dada, sal), hash);
+  let ok;
+  if (SENHA_ENV) {
+    ok = iguais(dada, SENHA_ENV);
+  } else {
+    const guardada = await redis(['GET', 'cfg:senha']);
+    const [sal, hash] = String(guardada || '').split(':');
+    ok = !!(sal && hash) && iguais(derivar(dada, sal), hash);
+  }
+
+  if (ok) {
+    await redis(['DEL', chave]);
+    return 'ok';
+  }
+
+  const n = await redis(['INCR', chave]);
+  if (n === 1) await redis(['EXPIRE', chave, String(JANELA_ERRO)]);
+  return 'errada';
+}
+
+/* devolve true quando já respondeu — o chamador só precisa dar return */
+function barrar(res, estado) {
+  if (estado === 'ok') return false;
+  if (estado === 'bloqueado') res.status(429).json({ erro: 'senha-bloqueada' });
+  else res.status(401).json({ erro: 'nao-autorizado' });
+  return true;
 }
 
 module.exports = async (req, res) => {
@@ -173,7 +201,7 @@ module.exports = async (req, res) => {
 
     /* ---------- fila de moderação ---------------------------------- */
     if (req.method === 'GET' && req.query.fila) {
-      if (!(await autorizado(req))) return res.status(401).json({ erro: 'nao-autorizado' });
+      if (barrar(res, await conferirSenha(req))) return;
       const bruto = await redis(['HGETALL', 'pend']);
       const itens = [];
       /* HGETALL volta como lista achatada [campo, valor, ...] em um
@@ -225,9 +253,23 @@ module.exports = async (req, res) => {
       return res.status(201).json({ ok: true });
     }
 
+    /* ---------- trocar a senha ------------------------------------- */
+    if (corpo.acao === 'trocar-senha') {
+      if (SENHA_ENV) return res.status(409).json({ erro: 'senha-por-variavel' });
+      if (barrar(res, await conferirSenha(req))) return;
+
+      const nova = String(corpo.nova || '');
+      if (nova.length < MIN_SENHA) return res.status(400).json({ erro: 'senha-curta' });
+      if (nova === senhaEnviada(req)) return res.status(400).json({ erro: 'senha-igual' });
+
+      const sal = crypto.randomBytes(16).toString('hex');
+      await redis(['SET', 'cfg:senha', sal + ':' + derivar(nova, sal)]);
+      return res.status(200).json({ ok: true });
+    }
+
     /* ---------- moderar -------------------------------------------- */
     if (corpo.acao === 'aprovar' || corpo.acao === 'recusar') {
-      if (!(await autorizado(req))) return res.status(401).json({ erro: 'nao-autorizado' });
+      if (barrar(res, await conferirSenha(req))) return;
       const id = String(corpo.id || '').slice(0, 40);
       if (!id) return res.status(400).json({ erro: 'id-ausente' });
 

@@ -1603,6 +1603,8 @@ main > section:not(.hero){
 .com-form label span{ font-weight:400; color:var(--muted-fg); }
 .com-form input[type=text],
 .com-form input[type=email],
+.mod-login input[type=password],
+.mod-trocar input[type=password],
 .com-form textarea{
   display:block; width:100%; margin-top:.375rem;
   padding:.75rem .875rem;
@@ -1613,6 +1615,8 @@ main > section:not(.hero){
 }
 .com-form textarea{ resize:vertical; min-height:7rem; line-height:1.6; }
 .com-form input:focus,
+.mod-login input:focus,
+.mod-trocar input:focus,
 .com-form textarea:focus{
   outline:none; border-color:var(--secondary);
   box-shadow:0 0 0 3px hsl(var(--ink) / .08);
@@ -1653,6 +1657,19 @@ main > section:not(.hero){
 .mod-botoes button:hover{ transform:translateY(-2px); border-color:var(--secondary); }
 .mod-botoes .aprovar{ background:var(--accent); border-color:var(--accent); color:#fff; }
 .mod-botoes .recusar{ color:hsl(0 65% 45%); }
+
+/* troca de senha: recolhida, para não competir com a fila */
+.mod-trocar{
+  margin-top:3rem; padding:1.25rem 1.5rem;
+  border:1px solid var(--border); border-radius:.875rem; background:var(--muted);
+}
+.mod-trocar summary{
+  cursor:pointer; font-size:.875rem; font-weight:600; color:var(--secondary);
+}
+.mod-trocar form{ display:flex; flex-direction:column; gap:.75rem; margin-top:1.25rem; }
+.mod-trocar label{ font-size:.8125rem; font-weight:600; }
+.mod-trocar button{ align-self:flex-start; }
+.mod-dica{ font-size:.8125rem; line-height:1.65; color:var(--muted-fg); }
 .mod-resposta{
   width:100%; margin-top:.75rem; padding:.625rem .75rem;
   border:1px solid var(--border); border-radius:.5rem;
