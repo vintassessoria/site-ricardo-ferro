@@ -40,9 +40,18 @@
   var lista = document.createElement('div');
   lista.className = 'com-lista';
 
+  /* Cabeçalho da lista. Existe porque o formulário vem antes dela: sem
+     uma linha separando, o primeiro comentário pareceria parte do form. */
+  var tituloLista = document.createElement('h3');
+  tituloLista.className = 'com-titulo-lista';
+
   function desenharLista(itens) {
+    tituloLista.textContent = !itens.length
+      ? 'Nenhum comentário ainda'
+      : (itens.length === 1 ? '1 comentário' : itens.length + ' comentários');
+
     if (!itens.length) {
-      lista.innerHTML = '<p class="com-vazio">Ainda não há comentários. Seja o primeiro.</p>';
+      lista.innerHTML = '<p class="com-vazio">Seja o primeiro a comentar neste artigo.</p>';
       return;
     }
     lista.innerHTML = itens.map(function (c) {
@@ -73,7 +82,6 @@
     form.className = 'com-form';
     form.noValidate = true;
     form.innerHTML =
-      '<h3>Deixe seu comentário</h3>' +
       '<p class="com-aviso-lgpd">Este espaço é público. Não escreva sintomas, exames ou dados pessoais aqui — ' +
         'para falar do seu caso, use o <a href="https://wa.me/556191332384" target="_blank" rel="noopener noreferrer">WhatsApp</a>.</p>' +
       '<div class="com-linha">' +
@@ -162,8 +170,11 @@
     .then(function (j) {
       area.innerHTML = '';
       desenharLista(j.itens || []);
-      area.appendChild(lista);
+      /* o formulário vem primeiro: em um artigo com trinta comentários,
+         deixá-lo no fim seria pedir que o leitor role tudo para escrever */
       area.appendChild(montarForm());
+      area.appendChild(tituloLista);
+      area.appendChild(lista);
     })
     .catch(function (e) {
       if (e && e.message === 'nao-configurado') {

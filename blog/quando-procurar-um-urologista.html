@@ -105,6 +105,11 @@
         <span class="sep">•</span>
         <span>Dr. Ricardo Ferro</span>
       </div>
+
+      <a class="ir-comentar" href="#comentarios">
+        <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Comentar</span>
+      </a>
     </div>
   </header>
 
@@ -190,6 +195,20 @@
     </div>
   </div>
 
+  <!-- ===================== COMENTARIOS =====================
+       Fica antes da chamada de propósito: o formulário é a única
+       coisa nesta página que o leitor pode fazer, e enterrá-lo no
+       rodapé equivale a não ter comentário nenhum.
+  ======================================================== -->
+  <section class="container artigo-largura comentarios" id="comentarios">
+    <h2>Comentários</h2>
+    <p class="comentarios-sub">
+      Tem uma dúvida sobre o assunto do artigo ou quer contar sua experiência?
+      Escreva abaixo. Todo comentário passa por revisão antes de aparecer.
+    </p>
+    <div id="area-comentarios"></div>
+  </section>
+
   <!-- chamada -->
   <div class="container artigo-largura">
     <div class="artigo-cta">
@@ -203,17 +222,6 @@
       </a>
     </div>
   </div>
-
-  <!-- ===================== COMENTARIOS =====================
-       Site estatico nao guarda comentario sozinho: precisa de um
-       servico externo. O bloco abaixo ja esta pronto; falta apenas
-       informar a conta em assets/comentarios.js (uma linha).
-       Enquanto nao houver conta configurada, aparece o aviso.
-  ======================================================== -->
-  <section class="container artigo-largura comentarios" id="comentarios">
-    <h2>Comentários</h2>
-    <div id="area-comentarios"></div>
-  </section>
 
 </article>
 
