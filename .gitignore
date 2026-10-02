@@ -29,3 +29,9 @@ WhatsApp Image*.jpeg
 # Master do video de tour. A versao usada no site, com faststart, esta
 # em fotos/tour-clinica.mp4
 lowres.mp4
+
+# Master do video institucional (152 MB, HEVC). A versao usada no site,
+# em H.264 com faststart, esta em fotos/institucional.mp4. A barra
+# inicial importa: no Windows o git ignora caixa, e sem ela o padrao
+# pegaria fotos/institucional.mp4 tambem.
+/INSTITU*.mp4

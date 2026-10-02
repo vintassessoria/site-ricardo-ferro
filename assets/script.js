@@ -325,29 +325,39 @@
   });
 
   /* ======================================================================
-     5e. VÍDEO DO TOUR
-     Arquivo proprio, com narracao: por isso comeca parado e sem som
-     forcado. O preload="none" segura os 5 MB ate alguem apertar o play;
-     os controles nativos so aparecem depois do primeiro clique.
+     5e. VÍDEOS COM ARQUIVO PRÓPRIO (institucional e tour)
+     Têm narração: por isso começam parados e sem som forçado. O
+     preload="none" segura o download até alguém apertar o play; os
+     controles nativos só aparecem depois do primeiro clique.
      ====================================================================== */
-  var caixaTour = document.querySelector('.tour-video');
-  if (caixaTour) {
-    var videoTour = caixaTour.querySelector('video');
-    var btnTour   = caixaTour.querySelector('.video-play');
+  var caixasVideo = document.querySelectorAll('.tour-video, .video-proprio');
 
-    btnTour.addEventListener('click', function () {
-      videoTour.setAttribute('controls', '');
-      caixaTour.classList.add('tocando');
-      var p = videoTour.play();
+  caixasVideo.forEach(function (caixa) {
+    var video = caixa.querySelector('video');
+    var btn   = caixa.querySelector('.video-play');
+
+    btn.addEventListener('click', function () {
+      video.setAttribute('controls', '');
+      caixa.classList.add('tocando');
+      var p = video.play();
       if (p && p.catch) p.catch(function () {});
     });
 
-    /* se pausar no meio, o botao nao volta: os controles nativos ja
-       assumiram e dois play na tela confundiriam */
-    videoTour.addEventListener('ended', function () {
-      videoTour.currentTime = 0;
+    /* dois vídeos narrados ao mesmo tempo viram ruído: o que começa
+       pausa o outro */
+    video.addEventListener('play', function () {
+      caixasVideo.forEach(function (outra) {
+        var v = outra.querySelector('video');
+        if (v !== video && !v.paused) v.pause();
+      });
     });
-  }
+
+    /* se pausar no meio, o botão não volta: os controles nativos já
+       assumiram e dois play na tela confundiriam */
+    video.addEventListener('ended', function () {
+      video.currentTime = 0;
+    });
+  });
 
 
   /* ======================================================================

@@ -257,14 +257,27 @@
     </div>
 
     <div class="video-wrap" data-reveal="zoom">
-      <div class="video-embed" data-yt="pU1KcRvhEDQ" data-slot="Vídeo de apresentação — cole o ID do YouTube no atributo data-yt">
-        <img class="video-poster" src="fotos/video-capa.jpg" alt="" onerror="this.remove()">
-        <button class="video-play" type="button" disabled aria-label="Reproduzir vídeo de apresentação">
+      <!-- institucional: arquivo proprio (fotos/institucional.mp4, 36 MB).
+           preload="none" segura o download ate alguem apertar o play -->
+      <div class="video-proprio">
+        <video src="/fotos/institucional.mp4" poster="/fotos/institucional-capa.jpg" preload="none" playsinline></video>
+        <button class="video-play" type="button" aria-label="Reproduzir vídeo institucional do Dr. Ricardo Ferro">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
         </button>
       </div>
+    </div>
 
-      <div class="video-cta" data-reveal>
+    <div class="video-extra" data-reveal>
+      <div class="video-embed" data-yt="pU1KcRvhEDQ" data-slot="Vídeo secundário — cole o ID do YouTube no atributo data-yt">
+        <img class="video-poster" src="fotos/video-capa.jpg" alt="" onerror="this.remove()">
+        <button class="video-play" type="button" disabled aria-label="Reproduzir vídeo sobre cirurgia robótica">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+      <div>
+        <span class="eyebrow">Assista também</span>
+        <h3>Cirurgia robótica</h3>
+        <p>Mais vídeos sobre tratamentos e cuidados no canal do Dr. Ricardo.</p>
         <a class="btn-youtube" href="https://www.youtube.com/@ricardoferrouro" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8M9.5 15.6V8.4l6.3 3.6z"/></svg>
           Ver canal no YouTube
